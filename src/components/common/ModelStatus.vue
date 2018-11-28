@@ -2,7 +2,7 @@
   <v-layout justify-start align-center column class="model-status-background">
     <div class="model-status">{{message}}  </div>
     <v-flex>
-      <v-progress-circular v-show="modelLoading | modelInitializing" indeterminate color="primary" height="250px"/>
+      <v-progress-circular v-show="modelLoading | modelInitializing" indeterminate color="primary"/>
     </v-flex>
   </v-layout>
 </template>
@@ -59,26 +59,4 @@ export default class ModelStatus extends Vue {
   display: center;
   margin: 0 auto;
 }
-
-.trPic{
-    position:absolute;
-    z-index:2;
-    width:100%;
-    height:100%;
-    background-color: whitesmoke;
-    opacity:1;
-    text-align: center;
-    vertical-align: middle;
-    text-opacity: 1;
-    float: left;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    justify-content:center;
-    
-	}
-
-	.trPic .redO{
-
-	}
 </style>

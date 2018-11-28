@@ -6,26 +6,20 @@
       </v-navigation-drawer>
       <v-toolbar app dark flat color="primary">
         <v-toolbar-side-icon @click.stop="showNav = !showNav"></v-toolbar-side-icon>
-        <!-- <router-link to="/"><img src="@/assets/logo.png"></router-link> -->
-        <!-- <MainMenu></MainMenu> -->
         <v-toolbar-title>{{ currentTitle }}</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
 
       <v-content>
-        <v-container fluid fill-height class="content-panel">
-          <!-- <router-view :hasWebGL="hasWebGL"></router-view> -->
+        <v-container  @click.stop="showNav = false" fluid fill-height class="content-panel">
           <div class="demo">
             <div class="ui-container">
-              <!-- <v-container fluid> -->
               <router-view :hasWebGL="hasWebGL"></router-view>         
               <v-layout row justify-center align-center fill-height class="footer-label bottom-label">
                 {{ currentDescription }}
               </v-layout>  
-              <!-- </v-container> -->
             </div>
           </div>
-
         </v-container>
       </v-content>
     </v-app>
@@ -34,24 +28,21 @@
 
 <script lang="ts">
 import MainMenu from './components/MainMenu.vue';
-import InfoPanel from './components/InfoPanel.vue';
 import { DEMO_TITLES, DEMO_DESCRIPTIONS } from './data/demo-titles';
 import Component from 'vue-class-component';
 import Vue from 'vue';
 
 @Component({ 
-  components: {MainMenu, InfoPanel} 
+  components: {MainMenu} 
 })
 
 export default class App extends Vue {
   showNav: boolean;
-  showInfoPanel: boolean;
   hasWebGL: boolean;
 
   constructor() {
     super();
     this.showNav = false;
-    this.showInfoPanel = false;
     this.hasWebGL = true;
   }
 
@@ -75,9 +66,6 @@ export default class App extends Vue {
     } else {
       return '';
     }
-  }
-  closeInfoPanel() {
-    this.showInfoPanel = false;
   }
 }
 </script>

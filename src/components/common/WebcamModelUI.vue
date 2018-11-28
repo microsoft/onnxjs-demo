@@ -340,7 +340,7 @@ export default class WebcamModelUI extends Vue{
     }
   }
 
-async stopCamera() {
+  async stopCamera() {
     this.webcamElement.pause();
     while (this.sessionRunning) {
       await tf.nextFrame();
@@ -474,15 +474,5 @@ async stopCamera() {
       white-space: nowrap;
     }
   }
-}
-
-/* vue transition `fade` */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

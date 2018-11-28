@@ -3,7 +3,6 @@ import Router from 'vue-router';
 import Home from '../components/Home.vue';
 import Resnet50 from '../components/models/Resnet50.vue';
 import SqueezeNet from '../components/models/Squeezenet.vue';
-// import Yolo from '../components/models/Yolo.vue';
 import Emotion from '../components/models/Emotion.vue';
 import MNIST from '../components/models/MNIST.vue';
 
@@ -26,10 +25,6 @@ export default new Router({
       path: '/squeezenet',
       component: SqueezeNet,
     },
-    // {
-    //   path: '/yolo',
-    //   component: Yolo,
-    // },
     {
       path:'/emotion',
       component: Emotion,
@@ -38,9 +33,5 @@ export default new Router({
       path:'/mnist',
       component: MNIST,
     }
-    // { 
-    //   path: '/', 
-    //   redirect: '*'
-    // }
   ],
 });

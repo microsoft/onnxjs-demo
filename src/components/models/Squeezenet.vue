@@ -1,10 +1,10 @@
 <template>
   <ImageModelUI
-    modelName="squeezenet"
     :modelFilepath="modelFilepath"
-    :imageSize="224"
-    :preprocess="preprocess"
+    :imageSize="224"    
     :imageUrls="imageUrls"
+    :preprocess="preprocess"
+    :getPredictedClass="getPredictedClass"
   ></ImageModelUI>
 </template>
 
@@ -15,6 +15,7 @@ import ImageModelUI from '../common/ImageModelUI.vue';
 import {Tensor} from 'onnxjs';
 import {Vue, Component} from 'vue-property-decorator';
 import { SQUEEZENET_IMAGE_URLS } from '../../data/sample-image-urls';
+import { imagenetUtils} from '../../utils/index';
 
 const MODEL_FILEPATH_PROD = `/squeezenetV1_8.onnx`;
 const MODEL_FILEPATH_DEV = '/squeezenetV1_8.onnx';
@@ -54,6 +55,17 @@ export default class SqueezeNet extends Vue{
     const tensor = new Tensor(new Float32Array(width * height * 3), 'float32', [1, 3, width, height]);
     (tensor.data as Float32Array).set(dataProcessedTensor.data);
     return tensor;
+  }
+
+  getPredictedClass(output: Float32Array): {} {
+    if (!output || output.length === 0) {
+      const empty = [];
+      for (let i = 0; i < 5; i++) {
+        empty.push({ name: '-', probability: 0, index: 0 });
+      }
+      return empty;
+    }
+    return imagenetUtils.imagenetClassesTopK(output, 5);
   }
 }
 </script>

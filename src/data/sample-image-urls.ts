@@ -36,20 +36,6 @@ export const SQUEEZENET_IMAGE_URLS = [
   { text: 'wine', value: 'https://farm4.staticflickr.com/3827/11349066413_99c32dee4a_z_d.jpg' },
 ];
 
-// export const YOLO_IMAGE_URLS = [    
-//   { text: 'airplane', value: 'https://farm6.staticflickr.com/5590/14821526429_5c6ea60405_z_d.jpg' },
-//   { text: 'cat', value: 'https://i.imgur.com/CzXTtJV.jpg' },
-//   { text: 'dog', value: 'https://i.imgur.com/OB0y6MR.jpg' },    
-//   { text: 'bicycle', value: ' http://farm3.static.flickr.com/2378/2178054924_423324aac8.jpg'},
-//   { text: 'bird', value: 'https://farm4.staticflickr.com/3075/3168662394_7d7103de7d_z_d.jpg' },
-//   { text: 'dog and bike', value: require('@/assets/dog416.png')},
-//   { text: 'boat', value: 'http://farm1.static.flickr.com/49/157534104_95ca4e0ae6.jpg '},
-//   { text: 'bus', value: 'http://farm4.static.flickr.com/3319/3211138044_9232086442.jpg'}, 
-//   { text: 'chair', value: 'http://farm4.static.flickr.com/3071/2939867225_dece34cd5d.jpg'},
-//   { text: 'two chairs', value: 'http://farm4.static.flickr.com/3049/2327691528_f060ee2d1f.jpg'},
-//   { text: 'cow', value: 'http://farm3.static.flickr.com/2042/2203964933_f1b80a18ba.jpg'}
-// ];
-
 export const EMOTION_IMAGE_URLS = [    
   { text: 'happy girl', value: 'https://farm3.static.flickr.com/2064/1566247441_4f49f3c7a4.jpg' },
   { text: 'angry boy', value: 'https://c2.staticflickr.com/4/3062/2582025069_1ec25af220_z.jpg?zz=1'},

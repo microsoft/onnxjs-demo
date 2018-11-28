@@ -35,7 +35,6 @@ import {Vue, Component, Prop} from 'vue-property-decorator';
 const DEMO_INFO = [
   { model: 'ResNet', title: 'ResNet, trained on ImageNet', path: 'resnet50'},  
   { model: 'SqueezeNet', title: 'SqueezeNet, trained on ImageNet', path: 'squeezenet'},
-  // { model: 'Yolo', title: 'Yolo', path: 'yolo'},
   { model: 'Emotion FerPlus', title: 'Emotion FerPlus', path: 'emotion'},
   { model: 'MNIST', title: 'MNIST', path: 'mnist'}, 
 ];

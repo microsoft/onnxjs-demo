@@ -87,7 +87,7 @@
 
 <script lang="ts">
 import loadImage from 'blueimp-load-image';
-import { imagenetUtils, runModelUtils} from '../../utils';
+import {runModelUtils} from '../../utils';
 
 import modelStatus from './ModelStatus.vue';
 import {InferenceSession, Tensor} from 'onnxjs';
@@ -100,11 +100,11 @@ import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
 })
 
 export default class ImageModelUI extends Vue{
-  @Prop({ type: String, required: true }) modelName!: string; 
   @Prop({ type: String, required: true }) modelFilepath!: string;
-  @Prop({ type: Number, required: true }) imageSize!: number;
-  @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
+  @Prop({ type: Number, required: true }) imageSize!: number;  
   @Prop({ type: Array, required: true}) imageUrls!: Array<{text: string, value: string}>;
+  @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
+  @Prop({ type: Function, required: true }) getPredictedClass !: (output: Float32Array) => {};
 
   sessionBackend: string;
   backendSelectList: Array<{text: string, value: string}>;
@@ -232,14 +232,7 @@ export default class ImageModelUI extends Vue{
   }
 
   get outputClasses() {
-    if (!this.output || this.output.length === 0) {
-      const empty = [];
-      for (let i = 0; i < 5; i++) {
-        empty.push({ name: '-', probability: 0, index: 0 });
-      }
-      return empty;
-    }
-    return imagenetUtils.imagenetClassesTopK(this.output, 5);
+    return this.getPredictedClass(Array.prototype.slice.call(this.output));
   }
 
   onImageURLInputEnter(e: any) {
