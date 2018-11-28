@@ -5,7 +5,7 @@
   "main": "electron.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target app",
+    "build": "vue-cli-service build --target app --dest docs",
     "lint": "tslint -p . -t verbose",
     "electron": "electron .",
     "electron-packager": "electron-packager . ONNX-js-demo --win32 --ignore=\"/(src|types|public|node_modules)\""
