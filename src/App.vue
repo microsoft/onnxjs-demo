@@ -1,0 +1,171 @@
+<template>
+  <div id="app">
+    <v-app>
+       <v-navigation-drawer v-model="showNav" absolute fixed floating app>
+        <main-menu :currentView="currentView"></main-menu>
+      </v-navigation-drawer>
+      <v-toolbar app dark flat color="primary">
+        <v-toolbar-side-icon @click.stop="showNav = !showNav"></v-toolbar-side-icon>
+        <!-- <router-link to="/"><img src="@/assets/logo.png"></router-link> -->
+        <!-- <MainMenu></MainMenu> -->
+        <v-toolbar-title>{{ currentTitle }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+
+      <v-content>
+        <v-container fluid fill-height class="content-panel">
+          <!-- <router-view :hasWebGL="hasWebGL"></router-view> -->
+          <div class="demo">
+            <div class="ui-container">
+              <!-- <v-container fluid> -->
+              <router-view :hasWebGL="hasWebGL"></router-view>         
+              <v-layout row justify-center align-center fill-height class="footer-label bottom-label">
+                {{ currentDescription }}
+              </v-layout>  
+              <!-- </v-container> -->
+            </div>
+          </div>
+
+        </v-container>
+      </v-content>
+    </v-app>
+  </div>
+</template>
+
+<script lang="ts">
+import MainMenu from './components/MainMenu.vue';
+import InfoPanel from './components/InfoPanel.vue';
+import { DEMO_TITLES, DEMO_DESCRIPTIONS } from './data/demo-titles';
+import Component from 'vue-class-component';
+import Vue from 'vue';
+
+@Component({ 
+  components: {MainMenu, InfoPanel} 
+})
+
+export default class App extends Vue {
+  showNav: boolean;
+  showInfoPanel: boolean;
+  hasWebGL: boolean;
+
+  constructor() {
+    super();
+    this.showNav = false;
+    this.showInfoPanel = false;
+    this.hasWebGL = true;
+  }
+
+  get currentView() {
+    const path = this.$route.path;
+    return path.replace(/^\//, '') || 'home';
+  }
+
+  get currentTitle() {
+    const title = DEMO_TITLES[this.currentView];
+    if (title) {
+      return title;
+    } else {
+      return 'ONNX.JS';
+    }
+  }
+  get currentDescription() {
+    const description = DEMO_DESCRIPTIONS[this.currentView];
+    if (description) {
+      return description;
+    } else {
+      return '';
+    }
+  }
+  closeInfoPanel() {
+    this.showInfoPanel = false;
+  }
+}
+</script>
+
+<style lang="postcss">
+@import './variables.css';
+
+.application {
+  font-family: var(--font-sans-serif)!important;;
+}
+
+.application.theme--light {
+  background: linear-gradient(0deg, #cccccc, #f0f0f0) !important;
+  color: var(--color-darkgray);
+}
+
+footer {
+  background: #cccccc !important;
+}
+
+.footer-label {
+  font-family: var(--font-sans-serif);
+  font-size: 17px;
+  color: var(--color-lightgray);
+  text-align: left;
+  user-select: none;
+  cursor: default;
+}
+
+.bottom-label {
+  padding: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.demo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/*******************************************************************/
+/* Vuetify overrides */
+
+.navigation-drawer {
+  background-color: whitesmoke !important;
+}
+
+.input-group--select .input-group__selections__comma,
+.input-group input,
+.input-group textarea {
+  font-size: 20px !important;
+  color: var(--color-black) !important;
+}
+
+.input-group:not(.input-group--error) label {
+  font-size: 20px !important;
+  color: var(--color-lightgray) !important;
+}
+
+.list .list__tile:not(.list__tile--active) {
+  color: var(--color-darkgray) !important;
+}
+
+.list__tile {
+  font-size: 16px !important;
+  height: 35px !important;
+  font-family: var(--font-monospace);
+}
+
+.content-panel {
+  padding: 0 !important;;
+}
+
+.select-backend {
+  align-self: left;
+  font-family: var(--font-sans-serif);
+  font-size: 20px;
+  color: var(--color-black);
+  margin-right: 10px;
+}
+
+.error-message {
+  color: var(--color-error);
+  font-size: 15px;
+  text-align: center;
+}
+
+</style>

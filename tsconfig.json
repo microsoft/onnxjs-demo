@@ -1,0 +1,70 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+      "module": "es2015",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "target": "es5",
+      "noImplicitAny": true,
+      "declaration": true,
+      "sourceMap": true,
+      "baseUrl": ".",
+      "preserveConstEnums": true,
+      "lib": [
+          "es2016", 
+          "dom", 
+          "esnext",
+          "dom.iterable",
+          "scripthost", 
+      ],
+      "declarationDir": "./types",
+      "noUnusedLocals": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
+      "strictNullChecks": true,
+      "noUnusedParameters": false,
+      "pretty": true,
+      "allowUnreachableCode": false,
+      "experimentalDecorators": true,
+      "allowSyntheticDefaultImports": true
+  },
+  // "compilerOptions": {
+  //   "target": "es5",
+  //   "module": "es2015",
+  //   "strict": true,
+  //   "jsx": "preserve",
+  //   "importHelpers": true,
+  //   "moduleResolution": "node",
+  //   "experimentalDecorators": true,
+  //   "esModuleInterop": true,
+  //   "allowSyntheticDefaultImports": true,
+  //   "sourceMap": true,
+  //   "baseUrl": ".",
+  //   "types": [
+  //     "node"
+  //   ],
+  //   "paths": {
+  //     "@/*": [
+  //       "src/*"
+  //     ]
+  //   },
+  //   "lib": [
+  //     "esnext",
+  //     "dom",
+  //     "dom.iterable",
+  //     "scripthost"
+  //   ]
+  // },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules", 
+    "src/common"
+  ]
+}
