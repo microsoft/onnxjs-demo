@@ -15,8 +15,9 @@
           <div class="demo">
             <div class="ui-container">
               <router-view :hasWebGL="hasWebGL"></router-view>         
-              <v-layout row justify-center align-center fill-height class="footer-label bottom-label">
+              <v-layout column justify-center align-center fill-height class="footer-label bottom-label">
                 {{ currentDescription }}
+                <a target="_blank" :href="currentLink">{{ currentLink }}</a>
               </v-layout>  
             </div>
           </div>
@@ -28,7 +29,7 @@
 
 <script lang="ts">
 import MainMenu from './components/MainMenu.vue';
-import { DEMO_TITLES, DEMO_DESCRIPTIONS } from './data/demo-titles';
+import { DEMO_TITLES, DEMO_DESCRIPTIONS, DEMO_MODEL_LINKS } from './data/demo-titles';
 import Component from 'vue-class-component';
 import Vue from 'vue';
 
@@ -67,6 +68,14 @@ export default class App extends Vue {
       return '';
     }
   }
+  get currentLink() {
+    const link = DEMO_MODEL_LINKS[this.currentView];
+    if (link) {
+      return link;
+    } else {
+      return '';
+    }
+  }
 }
 </script>
 
@@ -88,7 +97,7 @@ footer {
 
 .footer-label {
   font-family: var(--font-sans-serif);
-  font-size: 17px;
+  font-size: 16px;
   color: var(--color-lightgray);
   text-align: left;
   user-select: none;
