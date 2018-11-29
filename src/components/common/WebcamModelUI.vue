@@ -73,6 +73,14 @@
 </template>
 
 <script lang="ts">
+/**
+ * - setup() 
+ * - capture()
+ * - adjustVideoSize()
+ * are adapted from:
+ * https://github.com/ModelDepot/tfjs-yolo-tiny-demo/blob/master/src/webcam.js
+ */
+
 import {InferenceSession, Tensor} from 'onnxjs';
 import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
 import * as tf from '@tensorflow/tfjs';
@@ -166,7 +174,6 @@ export default class WebcamModelUI extends Vue{
     this.modelLoadingError = false;
     if (this.sessionBackend === 'webgl') {        
       if (this.gpuSession) {
-        console.log('session exists.');      
         this.session = this.gpuSession;
         return;
       }
@@ -315,7 +322,6 @@ export default class WebcamModelUI extends Vue{
   }
 
   async setup() {
-    console.log('setting up');
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       // TODO: Load model
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -324,7 +330,6 @@ export default class WebcamModelUI extends Vue{
       });
       this.webcamStream = stream;
       this.webcamElement.srcObject = stream;
-      console.log('set up complete');
       return new Promise(resolve => {
         this.webcamElement.onloadedmetadata = () => {
           this.videoOrigWidth = this.webcamElement.videoWidth;
@@ -374,12 +379,9 @@ export default class WebcamModelUI extends Vue{
     if (!this.webcamEnabled) {
       return;
     }
-    console.log('ready to capture');
     while (this.webcamEnabled) {
       const ctx = this.capture();      
-      // this.clearRects();
-      console.log('captured image');
-      // model predict
+      // run model
       await this.runModel(ctx);
       for (let i = 0; i < 5; i++) {
         await tf.nextFrame();

@@ -19,7 +19,7 @@ import {Vue, Component} from 'vue-property-decorator';
 import {RESNET50_IMAGE_URLS} from '../../data/sample-image-urls';
 import {imagenetUtils} from '../../utils/index';
 
-const MODEL_FILEPATH_PROD = `/resnet50_8.onnx`;
+const MODEL_FILEPATH_PROD = `/onnxjs-demo/resnet50_8.onnx`;
 const MODEL_FILEPATH_DEV = '/resnet50_8.onnx';
 
 @Component({

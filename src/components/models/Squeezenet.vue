@@ -17,7 +17,7 @@ import {Vue, Component} from 'vue-property-decorator';
 import { SQUEEZENET_IMAGE_URLS } from '../../data/sample-image-urls';
 import { imagenetUtils} from '../../utils/index';
 
-const MODEL_FILEPATH_PROD = `/squeezenetV1_8.onnx`;
+const MODEL_FILEPATH_PROD = `/onnxjs-demo/squeezenetV1_8.onnx`;
 const MODEL_FILEPATH_DEV = '/squeezenetV1_8.onnx';
 
 @Component({

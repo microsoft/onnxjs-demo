@@ -45,8 +45,8 @@ export const EMOTION_IMAGE_URLS = [
   'http://farm6.static.flickr.com/5568/30820940861_ae3650ec1b.jpg'},
   { text: 'suprised2', value: 
   'https://c1.staticflickr.com/9/8105/8526698140_96c8ae8d8f_b.jpg'},
-  { text: 'sad1', value: 
-  'https://farm8.staticflickr.com/7027/6561602655_c1ddd9e477_b.jpg'},
-  { text: 'sad2', value: 
-  'https://c1.staticflickr.com/8/7271/13713148263_031e2b987d_c.jpg'},
+  { text: 'sad', value: 
+  'https://c1.staticflickr.com/5/4138/4797886170_022a59aa23_b.jpg'},
+  { text: 'neutral', value: 
+  'https://c1.staticflickr.com/9/8093/8514722680_9f0bb7248e_n.jpg'},
 ];

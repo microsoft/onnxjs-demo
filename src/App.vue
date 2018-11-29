@@ -152,7 +152,7 @@ a {
 }
 
 .select-backend {
-  align-self: left;
+  text-align: center;
   font-family: var(--font-sans-serif);
   font-size: 20px;
   color: var(--color-black);
