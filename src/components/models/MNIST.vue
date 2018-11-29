@@ -17,7 +17,7 @@ import {Vue, Component} from 'vue-property-decorator';
 import { Tensor } from 'onnxjs';
 import { mathUtils } from '../../utils';
 
-const MODEL_FILEPATH_PROD = `/mnist.onnx`;
+const MODEL_FILEPATH_PROD = `/onnxjs-demo/mnist.onnx`;
 const MODEL_FILEPATH_DEV = '/mnist.onnx';
 
 @Component({

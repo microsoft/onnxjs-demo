@@ -22,7 +22,7 @@ import {Tensor, InferenceSession} from 'onnxjs';
 
 import {softmax} from '../../utils/math';
 
-const MODEL_FILEPATH_PROD = `/emotion.onnx`;
+const MODEL_FILEPATH_PROD = `/onnxjs-demo/emotion.onnx`;
 const MODEL_FILEPATH_DEV = '/emotion.onnx';
 
 @Component({
