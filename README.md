@@ -4,6 +4,8 @@ ONNX.js demo is an interactive demo portal showing real use cases running [ONNX.
 
 The demo is available [here](https://microsoft.github.io/onnxjs-demo/). 
 
+*NOTE: Currently, the supported platforms are Windows 10 + Edge/Chrome/Firefox/Electron/Node.js (support for other platforms is coming soon).*
+
 ## Use Cases
 
 The demo provides four scenarios based on four different ONNX pre-trained deep learning models. 
