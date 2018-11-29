@@ -47,8 +47,12 @@ export const EMOTION_IMAGE_URLS = [
   'http://farm6.static.flickr.com/5568/30820940861_ae3650ec1b.jpg'},
   { text: 'suprised baby', value: 
   'https://c1.staticflickr.com/9/8105/8526698140_96c8ae8d8f_b.jpg'},
-  { text: 'sad', value: 
+  { text: 'sad boy', value: 
   'https://c1.staticflickr.com/5/4138/4797886170_022a59aa23_b.jpg'},
+  { text: 'sad girl', value: 
+  'https://c1.staticflickr.com/9/8354/8274766749_4bd3d57e48_n.jpg'},
+  { text: 'fear', value: 
+  'https://c1.staticflickr.com/4/3863/15076381615_bdc4d2aff1_n.jpg'},
   { text: 'neutral', value: 
   'https://c1.staticflickr.com/9/8093/8514722680_9f0bb7248e_n.jpg'},
 ];

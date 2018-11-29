@@ -1,22 +1,20 @@
 # ONNX.js Demo
 
-ONNX.js demo is an interactive demo portal showing real use cases running [ONNX.js](https://github.com/Microsoft/onnxjs) in VueJS. It currently supports four examples for you to quickly experience the power of ONNX.js. 
+ONNX.js demo is an interactive demo portal showing real use cases running [ONNX.js](https://github.com/Microsoft/onnxjs) runtime in VueJS. It currently supports four examples for you to quickly experience the power of ONNX.js runtime. 
 
-The demo is available here. 
+The demo is available [here](https://microsoft.github.io/onnxjs-demo/). 
 
 ## Use Cases
 
 The demo provides four scenarios based on four different ONNX pre-trained deep learning models. 
 
-### 1. Squeezenet
+### 1. SqueezeNet
 
-[SqueezeNet](https://github.com/onnx/models/tree/master/squeezenet) is a light-weight convolutional network for image classification. Similar to the ResNet-50 demo, you can select or upload an image and see which category it's from in miliseconds.
+[SqueezeNet](https://github.com/onnx/models/tree/master/squeezenet) is a light-weight convolutional network for image classification. In the demo, you can select or upload an image and see which category it's from in miliseconds.
 
 ### 2. ResNet-50
 
-[ResNet-50](https://github.com/onnx/models/tree/master/models/image_classification/resnet) is a highly-accurate deep convolutional network for image classification. It is trained on 1000 pre-defined classes. In the demo, you can select or upload an image and see which category it's from.
-
-
+[ResNet-50](https://github.com/onnx/models/tree/master/models/image_classification/resnet) is a highly-accurate deep convolutional network for image classification. It is trained on 1000 pre-defined classes. Similar to the SqueezeNet demo, you can select or upload an image and see which category it's from.
 
 ### 3. FER+ Emotion Recognition
 [Emotion Ferplus](https://github.com/onnx/models/tree/master/emotion_ferplus)
@@ -58,7 +56,7 @@ This will create a new `/ONNXjs-demo-win32-x64` folder. Run `/ONNXjs-demo-win32-
 
 ## Credits 
 
-This demo is adapted from [keras.js demo](https://github.com/transcranial/keras-js). Modifications has been done to UIs and backends to use `ONNX.js`.
+This demo is adapted from [keras.js demo](https://github.com/transcranial/keras-js). Modifications have been made to the UI and the backend uses `ONNX.js`.
 
 ## Contributing
 
