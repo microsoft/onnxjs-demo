@@ -32,7 +32,7 @@
         <!-- select input images -->
         <v-flex sm6 md4 align-center justify-start column fill-height>
           <v-layout align-center> 
-            <v-flex sm3>
+            <v-flex sm4>
               <v-select
                 v-model="imageURLSelect"
                 :disabled="modelLoading || modelInitializing || modelLoadingError"
@@ -128,7 +128,7 @@ export default class ImageModelUI extends Vue{
   constructor() {
     super();
     this.sessionBackend = 'webgl';
-    this.backendSelectList = [{text: 'GPU-WebGL', value: 'webgl'}, {text: 'CPU-wasm', value: 'wasm'}];
+    this.backendSelectList = [{text: 'GPU-WebGL', value: 'webgl'}, {text: 'CPU-WebAssembly', value: 'wasm'}];
     this.modelLoading = true;
     this.modelInitializing = true;
     this.modelLoadingError = false;
@@ -159,7 +159,6 @@ export default class ImageModelUI extends Vue{
     this.modelLoadingError = false;
     if (this.sessionBackend === 'webgl') { 
       if (this.gpuSession) {
-        console.log('session exists.');      
         this.session = this.gpuSession;
         return;
       }

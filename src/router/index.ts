@@ -26,7 +26,7 @@ export default new Router({
       component: SqueezeNet,
     },
     {
-      path:'/emotion',
+      path:'/emotion_ferplus',
       component: Emotion,
     },
     {

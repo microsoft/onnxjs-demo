@@ -124,7 +124,7 @@ export default class DrawingModelUI extends Vue{
     this.modelLoadingError = false;
     this.sessionBackend = 'webgl';
     this.modelFile = new ArrayBuffer(0);
-    this.backendSelectList = [{text: 'GPU-WebGL', value: 'webgl'}, {text: 'CPU-wasm', value: 'wasm'}];
+    this.backendSelectList = [{text: 'GPU-WebGL', value: 'webgl'}, {text: 'CPU-WebAssembly', value: 'wasm'}];
   }
 
   async created() {
@@ -143,7 +143,6 @@ export default class DrawingModelUI extends Vue{
     this.modelLoadingError = false;
     if (this.sessionBackend === 'webgl') {        
       if (this.gpuSession) {
-        console.log('session exists.');      
         this.session = this.gpuSession;
         return;
       }

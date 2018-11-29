@@ -35,10 +35,10 @@
         </div>        
         <v-progress-circular v-show="sessionRunning" indeterminate color="primary" height="250px"/>
 
-        <v-flex sm6 class="text-xs-center">
+        <v-flex justify-center align-center sm6 class="text-xs-center" style="display: flex; flex-direction: column;">
           <div class="text-xs-center" style="display: flex;justify-content: center;">              
             <div v-if="imageLoadingError" class="error-message">Error loading URL</div>
-            <div style="width: 25%">
+            <div style="width: 70%">
               <v-select
                 v-model="imageURLSelect"
                 :items="imageUrls"
@@ -52,7 +52,7 @@
           <v-card-text>or</v-card-text>
           <v-btn 
             :disabled="modelLoading || modelInitializing || modelLoadingError || webcamEnabled" 
-            style="margin: 0;" class="inputs">
+            style="margin: 0; width: 30%" class="inputs text-xs-center">
             <label style="width: 100%; height: 100%">
               UPLOAD IMAGE
               <input style="display: none" type="file" @change="handleFileChange"/>
@@ -60,7 +60,7 @@
           </v-btn>
           <v-card-text>or</v-card-text>
           
-          <v-btn style="margin: 0;" v-on:click="webcamController" :disabled="modelLoadingError">
+          <v-btn style="margin: 0; width: 30%" v-on:click="webcamController" :disabled="modelLoadingError">
             {{ webcamStatus }}
           </v-btn>
         </v-flex>            
@@ -73,6 +73,14 @@
 </template>
 
 <script lang="ts">
+/**
+ * - setup() 
+ * - capture()
+ * - adjustVideoSize()
+ * are adapted from:
+ * https://github.com/ModelDepot/tfjs-yolo-tiny-demo/blob/master/src/webcam.js
+ */
+
 import {InferenceSession, Tensor} from 'onnxjs';
 import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
 import * as tf from '@tensorflow/tfjs';
@@ -142,7 +150,7 @@ export default class WebcamModelUI extends Vue{
 
     this.sessionBackend = 'webgl';
     this.modelFile = new ArrayBuffer(0);
-    this.backendSelectList = [{text: 'GPU-WebGL', value: 'webgl'}, {text: 'CPU-wasm', value: 'wasm'}];
+    this.backendSelectList = [{text: 'GPU-WebGL', value: 'webgl'}, {text: 'CPU-WebAssembly', value: 'wasm'}];
   }
 
   async mounted() {  
@@ -166,7 +174,6 @@ export default class WebcamModelUI extends Vue{
     this.modelLoadingError = false;
     if (this.sessionBackend === 'webgl') {        
       if (this.gpuSession) {
-        console.log('session exists.');      
         this.session = this.gpuSession;
         return;
       }
@@ -315,7 +322,6 @@ export default class WebcamModelUI extends Vue{
   }
 
   async setup() {
-    console.log('setting up');
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       // TODO: Load model
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -324,7 +330,6 @@ export default class WebcamModelUI extends Vue{
       });
       this.webcamStream = stream;
       this.webcamElement.srcObject = stream;
-      console.log('set up complete');
       return new Promise(resolve => {
         this.webcamElement.onloadedmetadata = () => {
           this.videoOrigWidth = this.webcamElement.videoWidth;
@@ -374,12 +379,9 @@ export default class WebcamModelUI extends Vue{
     if (!this.webcamEnabled) {
       return;
     }
-    console.log('ready to capture');
     while (this.webcamEnabled) {
       const ctx = this.capture();      
-      // this.clearRects();
-      console.log('captured image');
-      // model predict
+      // run model
       await this.runModel(ctx);
       for (let i = 0; i < 5; i++) {
         await tf.nextFrame();

@@ -39,14 +39,16 @@ export const SQUEEZENET_IMAGE_URLS = [
 export const EMOTION_IMAGE_URLS = [    
   { text: 'happy girl', value: 'https://farm3.static.flickr.com/2064/1566247441_4f49f3c7a4.jpg' },
   { text: 'angry boy', value: 'https://c2.staticflickr.com/4/3062/2582025069_1ec25af220_z.jpg?zz=1'},
-  { text: 'suprised', value: 
+  { text: 'angry guy', value: 
+  'https://c1.staticflickr.com/8/7396/12202725826_ae8c4d9e27_n.jpg'},
+  { text: 'suprised girl', value: 
     'https://c1.staticflickr.com/7/6147/5992512756_6da6de06c2_b.jpg'},
-  { text: 'suprised1', value: 
+  { text: 'suprised woman', value: 
   'http://farm6.static.flickr.com/5568/30820940861_ae3650ec1b.jpg'},
-  { text: 'suprised2', value: 
+  { text: 'suprised baby', value: 
   'https://c1.staticflickr.com/9/8105/8526698140_96c8ae8d8f_b.jpg'},
-  { text: 'sad1', value: 
-  'https://farm8.staticflickr.com/7027/6561602655_c1ddd9e477_b.jpg'},
-  { text: 'sad2', value: 
-  'https://c1.staticflickr.com/8/7271/13713148263_031e2b987d_c.jpg'},
+  { text: 'sad', value: 
+  'https://c1.staticflickr.com/5/4138/4797886170_022a59aa23_b.jpg'},
+  { text: 'neutral', value: 
+  'https://c1.staticflickr.com/9/8093/8514722680_9f0bb7248e_n.jpg'},
 ];

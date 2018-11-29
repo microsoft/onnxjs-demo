@@ -70,7 +70,6 @@ export default class Emotion extends Vue{
 
 	postprocess(tensor: Tensor, inferenceTime: number) {
 		const output = tensor.data;
-		console.log(output);
 		const emotionMap = ['neutral', 'happiness', 'surprise', 'sadness', 'anger',
        'disgust', 'fear', 'contempt'];
     const myOutput = softmax(Array.prototype.slice.call(output));

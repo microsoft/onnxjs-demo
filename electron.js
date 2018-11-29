@@ -18,10 +18,7 @@ function createWindow () {
       url = path.join(__dirname, WEB_FOLDER, url);
 
       // Replace backslashes by forward slashes (windows)
-      // url = url.replace(/\\/g, '/');
       url = path.normalize(url);
-
-      console.log(url);
       callback({path: url});
   });
   // Create the browser window.

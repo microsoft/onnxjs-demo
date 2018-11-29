@@ -8,7 +8,7 @@
     "build": "vue-cli-service build --target app",
     "lint": "tslint -p . -t verbose",
     "electron": "electron .",
-    "electron-packager": "electron-packager . ONNX-js-demo --win32 --ignore=\"/(src|types|public|node_modules)\""
+    "electron-packager": "electron-packager . ONNXjs-demo --win32 --ignore=\"/(src|types|public|node_modules)\""
   },
   "dependencies": {
     "@tensorflow/tfjs": "^0.13.3",
