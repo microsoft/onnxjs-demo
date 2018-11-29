@@ -39,6 +39,8 @@ export const SQUEEZENET_IMAGE_URLS = [
 export const EMOTION_IMAGE_URLS = [    
   { text: 'happy girl', value: 'https://farm3.static.flickr.com/2064/1566247441_4f49f3c7a4.jpg' },
   { text: 'angry boy', value: 'https://c2.staticflickr.com/4/3062/2582025069_1ec25af220_z.jpg?zz=1'},
+  { text: 'angry guy', value: 
+  'https://c1.staticflickr.com/8/7396/12202725826_ae8c4d9e27_n.jpg'},
   { text: 'suprised girl', value: 
     'https://c1.staticflickr.com/7/6147/5992512756_6da6de06c2_b.jpg'},
   { text: 'suprised woman', value: 

@@ -1,6 +1,6 @@
 <template>
   <aside class="menu">
-    <div class="logo"><a href="/">ONNX.JS</a></div>
+    <div class="logo"><a href=".">ONNX.JS</a></div>
     <p class="menu-label">Demos</p>
     <ul class="menu-list">
       <li v-for="info in demoInfo" :key="info.path" :class="{ active: currentView === 'resnet50' }">
@@ -33,7 +33,7 @@
 <script scoped lang='ts'>
 import {Vue, Component, Prop} from 'vue-property-decorator';
 const DEMO_INFO = [
-  { model: 'ResNet', title: 'ResNet, trained on ImageNet', path: 'resnet50'},  
+  { model: 'ResNet50', title: 'ResNet, trained on ImageNet', path: 'resnet50'},  
   { model: 'SqueezeNet', title: 'SqueezeNet, trained on ImageNet', path: 'squeezenet'},
   { model: 'Emotion FerPlus', title: 'Emotion FerPlus', path: 'emotion'},
   { model: 'MNIST', title: 'MNIST', path: 'mnist'}, 

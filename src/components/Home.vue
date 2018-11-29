@@ -1,7 +1,7 @@
 <template>
   <div class="demo home text-xs-center">
-    <v-img class="white--text" :src="require('@/assets/background.png')" height="600px">
-      <v-container padding-top="16px">
+    <v-img class="white--text" :src="require('@/assets/background.png')" height="600px" style="align-items: center">
+      <v-container>
         <v-layout column justify-center align-center>
           <v-flex class="onnx">ONNX.JS</v-flex>
           <v-flex class="run-onnx">Run ONNX model in the browser</v-flex>
@@ -26,8 +26,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 const DEMO_INFO = [
+  { title: 'SqueezeNet, trained on ImageNet', path: 'squeezenet', imagePath: require('@/assets/squeezenet.png') },  
   { title: 'ResNet50, trained on ImageNet', path: 'resnet50', imagePath: require('@/assets/resnet50.png') },
-  { title: 'SqueezeNet, trained on ImageNet', path: 'squeezenet', imagePath: require('@/assets/squeezenet.png') },
   { title: 'Emotion FerPlus', path: 'emotion', imagePath: require('@/assets/emotion.png') },
   { title: 'MNIST', path: 'mnist', imagePath: require('@/assets/mnist.png') },
 ];

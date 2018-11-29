@@ -1,7 +1,7 @@
 export const DEMO_TITLES: {[key: string]: string} = {
   resnet50: 'ResNet50, trained on ImageNet', 
   squeezenet: 'SqueezeNet, trained on ImageNet', 
-  emotion: 'FER+ Emoton, trained on Imagenet', 
+  emotion: 'FER+ Emotion, trained on Imagenet', 
   mnist: 'MNIST, handwritten digit prediction'
 };
 
