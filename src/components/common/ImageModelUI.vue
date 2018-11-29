@@ -128,7 +128,7 @@ export default class ImageModelUI extends Vue{
   constructor() {
     super();
     this.sessionBackend = 'webgl';
-    this.backendSelectList = [{text: 'GPU-WebGL', value: 'webgl'}, {text: 'CPU-wasm', value: 'wasm'}];
+    this.backendSelectList = [{text: 'GPU-WebGL', value: 'webgl'}, {text: 'CPU-WebAssembly', value: 'wasm'}];
     this.modelLoading = true;
     this.modelInitializing = true;
     this.modelLoadingError = false;
