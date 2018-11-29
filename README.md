@@ -12,25 +12,17 @@ The demo provides four scenarios based on four different ONNX pre-trained deep l
 
 [ResNet-50](https://github.com/onnx/models/tree/master/models/image_classification/resnet) is a highly-accurate deep convolutional network for image classification. It is trained on 1000 pre-defined classes. In the demo, you can select or upload an image and see which category it's from.
 
-![ResNet-50 Image](https://raw.githubusercontent.com/Microsoft/onnxjs-demo/master/src/assets/resnet50.png)
-
 ### 2. Squeezenet
 
 [SqueezeNet](https://github.com/onnx/models/tree/master/squeezenet) is a light-weight convolutional network for image classification. Similar to the ResNet-50 demo, you can select or upload an image and see which category it's from in miliseconds.
 
-![SqueezeNet Image](https://raw.githubusercontent.com/Microsoft/onnxjs-demo/master/src/assets/squeezenet.png)
-
 ### 3. FER+ Emotion Recognition
 [Emotion Ferplus](https://github.com/onnx/models/tree/master/emotion_ferplus)
  is a deep convolutional neural network for emotion recognition in faces. In the demo, you can choose to either select an image with any human face or to start a webcam and see what emotion it's showing.
-
-![Emotion Ferplus Image](https://raw.githubusercontent.com/Microsoft/onnxjs-demo/master/src/assets/emotion.png)
                                        
 ### 4. MNIST
 
 [MNIST](https://github.com/onnx/models/tree/master/mnist) is a convolutional neural network that predicts handwritten digits. In the demo, you can draw any number on the canvas and the model will tell you what number it is!
-
-![Emotion Ferplus Image](https://raw.githubusercontent.com/Microsoft/onnxjs-demo/master/src/assets/mnist.png)
 
 ## Run ONNX.js Demo
 ###	Install Dependencies
