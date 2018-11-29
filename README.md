@@ -8,13 +8,15 @@ The demo is available here.
 
 The demo provides four scenarios based on four different ONNX pre-trained deep learning models. 
 
-### 1. ResNet-50
+### 1. Squeezenet
+
+[SqueezeNet](https://github.com/onnx/models/tree/master/squeezenet) is a light-weight convolutional network for image classification. Similar to the ResNet-50 demo, you can select or upload an image and see which category it's from in miliseconds.
+
+### 2. ResNet-50
 
 [ResNet-50](https://github.com/onnx/models/tree/master/models/image_classification/resnet) is a highly-accurate deep convolutional network for image classification. It is trained on 1000 pre-defined classes. In the demo, you can select or upload an image and see which category it's from.
 
-### 2. Squeezenet
 
-[SqueezeNet](https://github.com/onnx/models/tree/master/squeezenet) is a light-weight convolutional network for image classification. Similar to the ResNet-50 demo, you can select or upload an image and see which category it's from in miliseconds.
 
 ### 3. FER+ Emotion Recognition
 [Emotion Ferplus](https://github.com/onnx/models/tree/master/emotion_ferplus)
@@ -44,7 +46,7 @@ This will start a dev server and run ONNX.js demo on your localhost.
 npm run build
 ```
 
-This will pack the source files into `/dist` folder and be ready for deployment.
+This will pack the source files into `/docs` folder and be ready for deployment.
 
 **- Electron support**
 
