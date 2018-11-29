@@ -15,7 +15,7 @@
           <div class="demo">
             <div class="ui-container">
               <router-view :hasWebGL="hasWebGL"></router-view>         
-              <v-layout column justify-center align-center fill-height class="footer-label bottom-label">
+              <v-layout column justify-center align-center fill-height class="footer-label">
                 {{ currentDescription }}
                 <a target="_blank" :href="currentLink">{{ currentLink }}</a>
               </v-layout>  
@@ -102,10 +102,6 @@ footer {
   text-align: left;
   user-select: none;
   cursor: default;
-}
-
-.bottom-label {
-  padding: 10px;
 }
 
 a {

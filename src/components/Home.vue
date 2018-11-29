@@ -28,7 +28,7 @@ import { Component, Vue } from 'vue-property-decorator';
 const DEMO_INFO = [
   { title: 'SqueezeNet, trained on ImageNet', path: 'squeezenet', imagePath: require('@/assets/squeezenet.png') },  
   { title: 'ResNet50, trained on ImageNet', path: 'resnet50', imagePath: require('@/assets/resnet50.png') },
-  { title: 'Emotion FerPlus', path: 'emotion', imagePath: require('@/assets/emotion.png') },
+  { title: 'Emotion FerPlus', path: 'emotion_ferplus', imagePath: require('@/assets/emotion.png') },
   { title: 'MNIST', path: 'mnist', imagePath: require('@/assets/mnist.png') },
 ];
 

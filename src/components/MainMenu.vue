@@ -32,10 +32,10 @@
 
 <script scoped lang='ts'>
 import {Vue, Component, Prop} from 'vue-property-decorator';
-const DEMO_INFO = [
-  { model: 'ResNet50', title: 'ResNet, trained on ImageNet', path: 'resnet50'},  
+const DEMO_INFO = [  
   { model: 'SqueezeNet', title: 'SqueezeNet, trained on ImageNet', path: 'squeezenet'},
-  { model: 'Emotion FerPlus', title: 'Emotion FerPlus', path: 'emotion'},
+  { model: 'ResNet50', title: 'ResNet, trained on ImageNet', path: 'resnet50'},  
+  { model: 'Emotion FerPlus', title: 'Emotion FerPlus', path: 'emotion_ferplus'},
   { model: 'MNIST', title: 'MNIST', path: 'mnist'}, 
 ];
 

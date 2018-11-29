@@ -35,10 +35,10 @@
         </div>        
         <v-progress-circular v-show="sessionRunning" indeterminate color="primary" height="250px"/>
 
-        <v-flex sm6 class="text-xs-center">
+        <v-flex justify-center align-center sm6 class="text-xs-center" style="display: flex; flex-direction: column;">
           <div class="text-xs-center" style="display: flex;justify-content: center;">              
             <div v-if="imageLoadingError" class="error-message">Error loading URL</div>
-            <div style="width: 25%">
+            <div style="width: 70%">
               <v-select
                 v-model="imageURLSelect"
                 :items="imageUrls"
@@ -52,7 +52,7 @@
           <v-card-text>or</v-card-text>
           <v-btn 
             :disabled="modelLoading || modelInitializing || modelLoadingError || webcamEnabled" 
-            style="margin: 0;" class="inputs">
+            style="margin: 0; width: 30%" class="inputs text-xs-center">
             <label style="width: 100%; height: 100%">
               UPLOAD IMAGE
               <input style="display: none" type="file" @change="handleFileChange"/>
@@ -60,7 +60,7 @@
           </v-btn>
           <v-card-text>or</v-card-text>
           
-          <v-btn style="margin: 0;" v-on:click="webcamController" :disabled="modelLoadingError">
+          <v-btn style="margin: 0; width: 30%" v-on:click="webcamController" :disabled="modelLoadingError">
             {{ webcamStatus }}
           </v-btn>
         </v-flex>            
