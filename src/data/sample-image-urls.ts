@@ -37,22 +37,14 @@ export const SQUEEZENET_IMAGE_URLS = [
 ];
 
 export const EMOTION_IMAGE_URLS = [    
-  { text: 'happy girl', value: 'https://farm3.static.flickr.com/2064/1566247441_4f49f3c7a4.jpg' },
-  { text: 'angry boy', value: 'https://c2.staticflickr.com/4/3062/2582025069_1ec25af220_z.jpg?zz=1'},
-  { text: 'angry guy', value: 
-  'https://c1.staticflickr.com/8/7396/12202725826_ae8c4d9e27_n.jpg'},
-  { text: 'suprised girl', value: 
-    'https://c1.staticflickr.com/7/6147/5992512756_6da6de06c2_b.jpg'},
-  { text: 'suprised woman', value: 
-  'http://farm6.static.flickr.com/5568/30820940861_ae3650ec1b.jpg'},
-  { text: 'suprised baby', value: 
-  'https://c1.staticflickr.com/9/8105/8526698140_96c8ae8d8f_b.jpg'},
-  { text: 'sad boy', value: 
-  'https://c1.staticflickr.com/5/4138/4797886170_022a59aa23_b.jpg'},
-  { text: 'sad girl', value: 
-  'https://c1.staticflickr.com/9/8354/8274766749_4bd3d57e48_n.jpg'},
-  { text: 'fear', value: 
-  'https://c1.staticflickr.com/4/3863/15076381615_bdc4d2aff1_n.jpg'},
-  { text: 'neutral', value: 
-  'https://c1.staticflickr.com/9/8093/8514722680_9f0bb7248e_n.jpg'},
+  { text: 'happy girl', value: require('@/assets/EmotionSampleImages/happy.jpg')},
+  { text: 'angry man', value: require('@/assets/EmotionSampleImages/angry_man.jpg')},
+  { text: 'angry baby', value: require('@/assets/EmotionSampleImages/angry_baby.jpg')},
+  { text: 'suprised boy', value: require('@/assets/EmotionSampleImages/surprised_boy.jpg')},
+  { text: 'suprised woman', value: require('@/assets/EmotionSampleImages/surprised_woman.jpg')},
+  { text: 'sad baby', value: require('@/assets/EmotionSampleImages/sad_baby.jpg')},
+  { text: 'sad baby 2', value: require('@/assets/EmotionSampleImages/sad_baby2.jpg')},
+  { text: 'fear', value: require('@/assets/EmotionSampleImages/fear.jpg')},
+  { text: 'neutral girl', value: require('@/assets/EmotionSampleImages/neutral.jpg')},
+  { text: 'neutral girl 2', value: require('@/assets/EmotionSampleImages/neutral_girl.jpg')},
 ];
