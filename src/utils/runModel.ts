@@ -2,7 +2,6 @@ import { InferenceSession, Tensor } from 'onnxjs';
 
 export function createSession(session: InferenceSession | undefined, hint: string): boolean {
     if (session) {
-        console.log('session exists.');      
         return false;
     } 
     session = new InferenceSession({backendHint: hint});
@@ -29,7 +28,6 @@ export async function runModel(model: InferenceSession, preprocessedData: Tensor
     const start = new Date();
     try {
         const outputData = await model.run([preprocessedData]);
-        console.log(outputData);
         const end = new Date();
         const inferenceTime = (end.getTime() - start.getTime());
         const output = outputData.values().next().value;

@@ -143,7 +143,6 @@ export default class DrawingModelUI extends Vue{
     this.modelLoadingError = false;
     if (this.sessionBackend === 'webgl') {        
       if (this.gpuSession) {
-        console.log('session exists.');      
         this.session = this.gpuSession;
         return;
       }
