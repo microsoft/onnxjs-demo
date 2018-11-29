@@ -8,7 +8,7 @@ module.exports = {
       }
     }
   },
-  baseUrl: process.env.NODE_ENV === 'production'? '/': '/',
+  baseUrl: process.env.NODE_ENV === 'production'? '/onnxjs-demo/': '/',
   outputDir: 'docs',
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'production') {
