@@ -29,33 +29,6 @@
       "experimentalDecorators": true,
       "allowSyntheticDefaultImports": true
   },
-  // "compilerOptions": {
-  //   "target": "es5",
-  //   "module": "es2015",
-  //   "strict": true,
-  //   "jsx": "preserve",
-  //   "importHelpers": true,
-  //   "moduleResolution": "node",
-  //   "experimentalDecorators": true,
-  //   "esModuleInterop": true,
-  //   "allowSyntheticDefaultImports": true,
-  //   "sourceMap": true,
-  //   "baseUrl": ".",
-  //   "types": [
-  //     "node"
-  //   ],
-  //   "paths": {
-  //     "@/*": [
-  //       "src/*"
-  //     ]
-  //   },
-  //   "lib": [
-  //     "esnext",
-  //     "dom",
-  //     "dom.iterable",
-  //     "scripthost"
-  //   ]
-  // },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
