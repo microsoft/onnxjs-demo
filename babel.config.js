@@ -1,6 +1,9 @@
 module.exports = {
   presets: [
     '@vue/app',
-    ['@babel/preset-env', {'modules': 'commonjs'}]
+    ['@babel/preset-env', {
+      'modules': 'commonjs',
+      'useBuiltIns': 'entry'
+    }]
   ]
 }

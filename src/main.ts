@@ -2,6 +2,8 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import Vuetify from 'vuetify';
+import '@babel/polyfill';
+import 'whatwg-fetch';
 import 'vuetify/dist/vuetify.min.css';
 
 Vue.config.productionTip = false;
