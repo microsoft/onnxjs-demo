@@ -13,8 +13,8 @@ export const DEMO_DESCRIPTIONS: {[key: string]: string} = {
 };
 
 export const DEMO_MODEL_LINKS: {[key: string]: string} = {
-  resnet50:  'https://github.com/onnx/models/tree/master/resnet50',
-  squeezenet: 'https://github.com/onnx/models/tree/master/squeezenet',
+  resnet50:  'https://github.com/onnx/models/tree/master/models/image_classification/resnet',
+  squeezenet: 'https://github.com/onnx/models/tree/master/models/image_classification/squeezenet',
   emotion_ferplus: 'https://github.com/onnx/models/tree/master/emotion_ferplus',
   mnist: 'https://github.com/onnx/models/tree/master/mnist'
 };

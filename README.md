@@ -4,7 +4,7 @@ ONNX.js demo is an interactive demo portal showing real use cases running [ONNX.
 
 The demo is available here [ONNX.js demo website](https://microsoft.github.io/onnxjs-demo/). 
 
-*NOTE: Currently, the supported platforms are Windows 10 + Edge/Chrome/Firefox/Electron/Node.js (support for other platforms is coming soon).*
+*NOTE: Currently, the supported platforms are Edge/Chrome/Firefox/Electron/Node.js (support for other platforms is coming soon).*
 
 ## Use Cases
 
@@ -12,7 +12,7 @@ The demo provides four scenarios based on four different ONNX pre-trained deep l
 
 ### 1. SqueezeNet
 
-[SqueezeNet](https://github.com/onnx/models/tree/master/squeezenet) is a light-weight convolutional network for image classification. In the demo, you can select or upload an image and see which category it's from in miliseconds.
+[SqueezeNet](https://github.com/onnx/models/tree/master/models/image_classification/squeezenet) is a light-weight convolutional network for image classification. In the demo, you can select or upload an image and see which category it's from in miliseconds.
 
 ### 2. ResNet-50
 
