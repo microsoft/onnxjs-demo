@@ -1,11 +1,13 @@
 <template>
   <WebcamModel
     modelName="Yolo"
+    :hasWebGL="hasWebGL"
     :modelFilepath="modelFilepath"
     :imageSize="416"
     :imageUrls="imageUrls"
-    :run="runModel"
     :warmupModel="warmupModel"
+    :preprocess="preprocess"
+		:postprocess="postprocess"
   ></WebcamModel>
 </template>
 
@@ -14,9 +16,8 @@ import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
 import WebcamModel from '../common/WebcamModelUI.vue';
 import {Vue, Component, Prop} from 'vue-property-decorator';
-import {runModelUtils, yoloTransforms, yolo} from '../../utils/index';
+import {runModelUtils, yolo, yoloTransforms} from '../../utils/index';
 import { YOLO_IMAGE_URLS } from '../../data/sample-image-urls';
-// import * as tf from '@tensorflow/tfjs';
 import {Tensor, InferenceSession} from 'onnxjs';
 
 const MODEL_FILEPATH_PROD = `/yolo.onnx`;
@@ -59,17 +60,9 @@ export default class Yolo extends Vue{
     return tensor;
   }
 
-  async runModel(ctx: CanvasRenderingContext2D, session: InferenceSession) {
-    const preprocessedData = this.preprocess(ctx);
-    console.log('preprocessedData ', preprocessedData);
-    console.log('run model');
-    console.log('time1 = ' + new Date().getTime());
-
-    // const url = 'http://138.91.127.119/score';
-    const [tensorData, inferenceTime] = await runModelUtils.runModel(session, preprocessedData);
-    console.log(tensorData);
+  async postprocess(tensor: Tensor, inferenceTime: number) {
     try {
-      const originalOutput = new Tensor(tensorData.data as Float32Array, 'float32', [1, 125, 13, 13]);
+      const originalOutput = new Tensor(tensor.data as Float32Array, 'float32', [1, 125, 13, 13]);
       console.log('originalOutput ', originalOutput);
       const outputTensor = yoloTransforms.transpose(originalOutput, [0, 2, 3, 1]);
 
@@ -87,6 +80,7 @@ export default class Yolo extends Vue{
           `${className} Confidence: ${Math.round(classProb * 100)}% Time: ${inferenceTime.toFixed(1)}ms`);
       });
     } catch (e) {
+      console.log(e);
       alert('Model is not valid!');
     }
   }

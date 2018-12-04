@@ -81,12 +81,11 @@
  * https://github.com/ModelDepot/tfjs-yolo-tiny-demo/blob/master/src/webcam.js
  */
 
-import {InferenceSession} from 'onnxjs';
+import {InferenceSession, Tensor} from 'onnxjs';
 import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
-import * as tf from '@tensorflow/tfjs';
 import loadImage from 'blueimp-load-image';
 import ModelStatus from '../common/ModelStatus.vue';
-// import { runModelUtils } from '../../utils';
+import { runModelUtils } from '../../utils';
 
 @Component({
   components: {
@@ -99,17 +98,14 @@ export default class WebcamModelUI extends Vue{
   @Prop({type: Number, required: true}) imageSize!: number;
   @Prop({type: Array, required: true}) imageUrls!: Array<{text: string, value: string}>;
   @Prop({type: Function, required: true}) warmupModel!: (session: InferenceSession)=> Promise<void>;
-  // @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
-  // @Prop({ type: Function, required: true }) postprocess!: (t: Tensor, inferenceTime: number) => void;
-  @Prop({ type: Function, required: true }) run!: 
-  (ctx: CanvasRenderingContext2D, session: InferenceSession) => void;
+  @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
+  @Prop({ type: Function, required: true }) postprocess!: (t: Tensor, inferenceTime: number) => void;
 
   webcamElement: HTMLVideoElement;
   videoOrigWidth: number;
   videoOrigHeight: number;
   webcamContainer : HTMLElement;
   inferenceTime: number;
-  outputTensor: tf.Tensor4D;
   session: InferenceSession;
   gpuSession: InferenceSession | undefined;
   cpuSession: InferenceSession | undefined;
@@ -350,7 +346,7 @@ export default class WebcamModelUI extends Vue{
   async stopCamera() {
     this.webcamElement.pause();
     while (this.sessionRunning) {
-      await tf.nextFrame();
+      await new Promise(resolve => requestAnimationFrame(() => resolve()));
     }
     this.clearRects();
     this.webcamEnabled = false;
@@ -386,20 +382,18 @@ export default class WebcamModelUI extends Vue{
       // run model
       await this.runModel(ctx);
       for (let i = 0; i < 5; i++) {
-        await tf.nextFrame();
+        await new Promise(resolve => requestAnimationFrame(() => resolve()));
       }
     }
   }
 
   async runModel(ctx: CanvasRenderingContext2D) {
-    // const data = this.preprocess(ctx);
-    // let outputTensor: Tensor;
-    // [outputTensor, this.inferenceTime] = await runModelUtils.runModel(this.session, data);    
-    // this.clearRects();
-    // this.postprocess(outputTensor, this.inferenceTime);
-    // this.sessionRunning = false;
-    this.run(ctx, this.session);
-
+    const data = this.preprocess(ctx);
+    let outputTensor: Tensor;
+    [outputTensor, this.inferenceTime] = await runModelUtils.runModel(this.session, data);    
+    this.clearRects();
+    this.postprocess(outputTensor, this.inferenceTime);
+    this.sessionRunning = false;
   }
 
   clearRects() {
