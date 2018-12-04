@@ -14,9 +14,22 @@ export type NumberOrBoolType = 'int32' | 'float32' | 'bool';
 export type NumberDataType = Uint8Array | Int32Array | Float32Array;
 
 // Utility Tensor Creators
+export function as1D(t: Tensor): Tensor {
+  return reshape(t, [t.data.length]);
+}
+
+export function scalar(value: number, dtype: NumberType = 'float32'): Tensor {
+  if (dtype !== 'float32' && dtype !== 'int32') {
+      throw new Error('Unsupported type for this transformation');
+  }
+  const data = TypedArrayUtil.createTypedArray(dtype, 1);
+  data[0] = value;
+  return new Tensor(data, dtype, [1]);
+}
+
 export function zeros(dims: ReadonlyArray<number>, dtype: NumberType = 'float32'): Tensor {
   if (dtype !== 'float32' && dtype !== 'int32' && dtype !== 'bool') {
-      throw new Error('unsupported type for creating all zero Tensor');
+      throw new Error('Unsupported type for creating all zero Tensor');
   }
   ShapeUtil.validateDims(dims);
   return new Tensor(TypedArrayUtil.createTypedArray(dtype, ShapeUtil.size(dims)), dtype, dims);
@@ -195,6 +208,23 @@ export function gather(t: Tensor, indices: Tensor, axis = 0): Tensor{
   }
   return new Tensor(Y, t.type, newDims);
 }
+
+export function slice(t: Tensor, begin: number[], size: number[]): Tensor{
+  if(t.type === 'string') {
+    throw new Error('Unspported type for this transformation');
+  }
+  const newDimsStride = ShapeUtil.computeStrides(size);
+  const oldDimsStride = ShapeUtil.computeStrides(t.dims ? t.dims : [t.data.length]);
+  const X = t.data;
+  const Y = TypedArrayUtil.createTypedArray(t.type, ShapeUtil.size(size));
+  for (let i = 0; i < Y.length; ++i) {
+    const newLogicalIndex = ShapeUtil.offsetToIndices(i, newDimsStride);
+    const oldLogicalIndex = newLogicalIndex.map((idx, j) => idx + begin[j]);
+    const oldOffset = ShapeUtil.indicesToOffset(oldLogicalIndex, oldDimsStride);
+    Y[i] = X[oldOffset] as number;
+  }
+  return new Tensor(Y, t.type, size);
+}
   
 export function tile(t: Tensor, reps: ReadonlyArray<number>): Tensor{
   if(t.type === 'string') {
@@ -315,7 +345,7 @@ export function where(condition: Tensor, t1: Tensor, t2: Tensor): Tensor {
 }
   
 // Cast Tensor Transforms
-export function cast(t: Tensor, dtype: NumberOrBoolType): Tensor {
+export function cast(t: Tensor, dtype: Type): Tensor {
   // TODO: If the requested type and the given type are the same, return same tensor ?
   // Need to investigate if it breaks some basic assumptions
   switch (dtype) {

@@ -53,7 +53,6 @@ export const YOLO_IMAGE_URLS = [
   { text: 'dog', value: 'https://i.imgur.com/OB0y6MR.jpg' },    
   { text: 'bicycle', value: ' http://farm3.static.flickr.com/2378/2178054924_423324aac8.jpg'},
   { text: 'bird', value: 'https://farm4.staticflickr.com/3075/3168662394_7d7103de7d_z_d.jpg' },
-  { text: 'dog and bike', value: require('@/assets/dog416.png')},
   { text: 'boat', value: 'http://farm1.static.flickr.com/49/157534104_95ca4e0ae6.jpg '},
   { text: 'bus', value: 'http://farm4.static.flickr.com/3319/3211138044_9232086442.jpg'}, 
   { text: 'chair', value: 'http://farm4.static.flickr.com/3071/2939867225_dece34cd5d.jpg'},

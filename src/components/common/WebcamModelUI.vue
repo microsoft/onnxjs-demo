@@ -81,12 +81,12 @@
  * https://github.com/ModelDepot/tfjs-yolo-tiny-demo/blob/master/src/webcam.js
  */
 
-import {InferenceSession, Tensor} from 'onnxjs';
+import {InferenceSession} from 'onnxjs';
 import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
 import * as tf from '@tensorflow/tfjs';
 import loadImage from 'blueimp-load-image';
 import ModelStatus from '../common/ModelStatus.vue';
-import { runModelUtils } from '../../utils';
+// import { runModelUtils } from '../../utils';
 
 @Component({
   components: {
@@ -99,8 +99,10 @@ export default class WebcamModelUI extends Vue{
   @Prop({type: Number, required: true}) imageSize!: number;
   @Prop({type: Array, required: true}) imageUrls!: Array<{text: string, value: string}>;
   @Prop({type: Function, required: true}) warmupModel!: (session: InferenceSession)=> Promise<void>;
-  @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
-  @Prop({ type: Function, required: true }) postprocess!: (t: Tensor, inferenceTime: number) => void;
+  // @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
+  // @Prop({ type: Function, required: true }) postprocess!: (t: Tensor, inferenceTime: number) => void;
+  @Prop({ type: Function, required: true }) run!: 
+  (ctx: CanvasRenderingContext2D, session: InferenceSession) => void;
 
   webcamElement: HTMLVideoElement;
   videoOrigWidth: number;
@@ -390,12 +392,13 @@ export default class WebcamModelUI extends Vue{
   }
 
   async runModel(ctx: CanvasRenderingContext2D) {
-    const data = this.preprocess(ctx);
-    let outputTensor: Tensor;
-    [outputTensor, this.inferenceTime] = await runModelUtils.runModel(this.session, data);    
-    this.clearRects();
-    this.postprocess(outputTensor, this.inferenceTime);
-    this.sessionRunning = false;
+    // const data = this.preprocess(ctx);
+    // let outputTensor: Tensor;
+    // [outputTensor, this.inferenceTime] = await runModelUtils.runModel(this.session, data);    
+    // this.clearRects();
+    // this.postprocess(outputTensor, this.inferenceTime);
+    // this.sessionRunning = false;
+    this.run(ctx, this.session);
 
   }
 

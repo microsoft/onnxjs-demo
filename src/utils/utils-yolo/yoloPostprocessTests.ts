@@ -1,6 +1,15 @@
 import {Tensor} from 'onnxjs';
 import * as tensorTransformUtils from './yoloPostprocess';
 
+// Scalar Test
+const actual0 = tensorTransformUtils.scalar(3.14, 'float32');
+const data = new Float32Array(1);
+data[0] = 3.14;
+const expected0 = new Tensor(data,'float32', [1]);
+if(!assertTensorEquality(actual0, expected0)) {
+    throw new Error('Scalar Test failed');
+}
+
 // Zeros Test
 const actual1 = tensorTransformUtils.zeros([2,2], 'int32');
 const expected1 = new Tensor(new Int32Array(4),'int32', [2,2]);
@@ -98,6 +107,13 @@ const actual13 = tensorTransformUtils.gather(new Tensor(Int32Array.from([1, 2, 3
 const expected13 = new Tensor(Int32Array.from([2, 4, 4]), 'int32');
 if(!assertTensorEquality(actual13, expected13)) {
     throw new Error('Gather Test failed');
+}
+
+// Slice Test
+const actual13b = tensorTransformUtils.slice(new Tensor(Int32Array.from([1, 2, 3, 4]), 'int32', [2,2]), [1, 0], [1, 2]);
+const expected13b = new Tensor(Int32Array.from([3, 4]), 'int32', [1,2]);
+if(!assertTensorEquality(actual13b, expected13b)) {
+    throw new Error('Slice Test failed');
 }
 
 // Tile Test
