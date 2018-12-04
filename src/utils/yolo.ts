@@ -91,7 +91,7 @@ export async function yolo_filter_boxes(
   ) {
     const boxScores = yolo.mul(boxConfidence, boxClassProbs);
     const boxClasses = yolo.argMax(boxScores, -1);
-    const boxClassScores = yolo.    max(boxScores, -1);
+    const boxClassScores = yolo.max(boxScores, -1);
     // Many thanks to @jacobgil
     // Source: https://github.com/ModelDepot/tfjs-yolo-tiny/issues/6#issuecomment-387614801
     const predictionMask = yolo.as1D(yolo.greaterEqual(boxClassScores, yolo.scalar(threshold)));
