@@ -83,7 +83,6 @@
 
 import {InferenceSession, Tensor} from 'onnxjs';
 import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
-import * as tf from '@tensorflow/tfjs';
 import loadImage from 'blueimp-load-image';
 import ModelStatus from '../common/ModelStatus.vue';
 import { runModelUtils } from '../../utils';
@@ -107,7 +106,6 @@ export default class WebcamModelUI extends Vue{
   videoOrigHeight: number;
   webcamContainer : HTMLElement;
   inferenceTime: number;
-  outputTensor: tf.Tensor4D;
   session: InferenceSession;
   gpuSession: InferenceSession | undefined;
   cpuSession: InferenceSession | undefined;
@@ -227,6 +225,7 @@ export default class WebcamModelUI extends Vue{
       this.stopCamera();
     }
     this.clearRects();
+    this.clearCanvas();
     try {
       await this.initSession();
     } catch (e) {
@@ -277,13 +276,11 @@ export default class WebcamModelUI extends Vue{
 
   loadImageToCanvas(url: string) {
     if (!url) {
-      // this.output = new Float32Array();
       const element = document.getElementById('input-canvas') as HTMLCanvasElement;
       const ctx = element.getContext('2d')as CanvasRenderingContext2D;
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       return;
     }
-    // this.imageLoading = true;
     loadImage(
         url,
         img => {
@@ -301,7 +298,6 @@ export default class WebcamModelUI extends Vue{
             this.imageLoadingError = false;
             this.imageLoading = false;
             this.sessionRunning = true;
-            // this.output = new Float32Array();
             this.inferenceTime = 0;
             // model predict
             this.$nextTick(function() {
@@ -323,7 +319,6 @@ export default class WebcamModelUI extends Vue{
 
   async setup() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      // TODO: Load model
       const stream = await navigator.mediaDevices.getUserMedia({
         'audio': false,
         'video': {facingMode: 'environment'}
@@ -348,9 +343,10 @@ export default class WebcamModelUI extends Vue{
   async stopCamera() {
     this.webcamElement.pause();
     while (this.sessionRunning) {
-      await tf.nextFrame();
+      await new Promise(resolve => requestAnimationFrame(() => resolve()));
     }
     this.clearRects();
+    this.clearCanvas();
     this.webcamEnabled = false;
   }
 
@@ -383,13 +379,12 @@ export default class WebcamModelUI extends Vue{
       const ctx = this.capture();      
       // run model
       await this.runModel(ctx);
-      for (let i = 0; i < 5; i++) {
-        await tf.nextFrame();
-      }
+      await new Promise(resolve => requestAnimationFrame(() => resolve()));
     }
   }
 
   async runModel(ctx: CanvasRenderingContext2D) {
+    this.sessionRunning = true;
     const data = this.preprocess(ctx);
     let outputTensor: Tensor;
     [outputTensor, this.inferenceTime] = await runModelUtils.runModel(this.session, data);    
@@ -399,11 +394,27 @@ export default class WebcamModelUI extends Vue{
 
   }
 
+  clearCanvas() {
+    this.inferenceTime = 0;
+    this.imageURLInput = '';
+    this.imageURLSelect = null;
+    this.imageLoading = false;
+    this.imageLoadingError = false;
+    const element = document.getElementById('input-canvas') as HTMLCanvasElement;
+    if (element) {
+      const ctx = element.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      }
+    }
+  }
+
   clearRects() {
     while (this.webcamContainer.childNodes.length > 2)  {
       this.webcamContainer.removeChild(this.webcamContainer.childNodes[2]);
     }
   }
+
 	// Capture image from video
   capture(): CanvasRenderingContext2D {
     const size = Math.min(this.videoOrigWidth, this.videoOrigHeight);
