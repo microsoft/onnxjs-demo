@@ -50,22 +50,18 @@ export function linspace(start: number, stop: number, num: number): Tensor {
 
 export function range(start: number, stop: number, step = 1, dtype: NumberType = 'float32'): Tensor {
   if (step === 0) {
-    throw new Error('step size of 0 is not accepted');
+    throw new Error('Step size of 0 is not acceptable');
   }
-
   // adjust default values
   if (stop < step && step === 1) {
     step = -1;
   }
-  
   // the following conditions cannot generate any data
   if (start === step || (start < stop && step < 0) || (stop < start && step > 0)) {
     return new Tensor(TypedArrayUtil.createTypedArray(dtype, 1), dtype, [1]);
   }
-
   const size = Math.abs(Math.ceil((stop - start) / step));
   const data = TypedArrayUtil.createTypedArray(dtype, size);
-
   data[0] = start;
   for (let i = 1; i < data.length; i++) {
     data[i] = data[i - 1] + step;
@@ -126,7 +122,7 @@ export function div(t1: Tensor, t2: Tensor): Tensor {
   if (t1.type !== t2.type) {
     throw new Error('Types are not homogeneous');
   }
-  // TODO: Handle division by zero
+  // TODO: Handle division by zero if any
   return binaryOp(t1, t2, (e1, e2) => (e1 / e2), t1.type);
 }
 
@@ -168,15 +164,8 @@ export function stack(tensors: Tensor[], axis = 0): Tensor {
   });
   TypeUtil.validateSameTypes(types);
   ShapeUtil.validateEqualDims(shapes);
-
   const rank = tensors[0].dims ? tensors[0].dims.length : 1; 
-  if (axis >= rank || axis < (-1 * rank)) {
-    throw new Error(`axis specified for stack doesn't match input dimensionality`);
-  }
-  if (axis < 0) {
-    axis = rank + axis;
-  }
-
+  axis = ShapeUtil.getActualAxisFromNegativeValue(axis, rank);
   const expanded = tensors.map(t => expandDims(t, axis));
   return concat(expanded, axis, false);
 }
@@ -259,9 +248,7 @@ export function transpose(t: Tensor, perm?: number[]): Tensor {
 
 // Shape Tensor Transforms
 export function expandDims(t: Tensor, axis = 0): Tensor {
-  if (axis < 0) {
-    axis = ShapeUtil.getActualAxisFromNegativeValue(axis, t.dims ? t.dims.length : 1);
-  }
+  axis = ShapeUtil.getActualAxisFromNegativeValue(axis, t.dims ? t.dims.length : 1);
   const dims = t.dims ? t.dims : [t.data.length];
   const changedShapeLength = dims.length + 1;
   const changedShape = new Array<number>(changedShapeLength);
@@ -367,9 +354,7 @@ export function argMax(t: Tensor, axis = 0): Tensor {
     throw new Error('Unsupported type for transform');
   }
   const rank = t.dims ? t.dims.length : 1;
-  if (axis < 0 || axis >= rank) {
-    throw new Error('axis specified is out of range for given tensor');
-  }
+  axis = ShapeUtil.getActualAxisFromNegativeValue(axis, rank);
   const [reduceDims, resultDims] = ShapeUtil.splitDimsIntoTwo(t.dims ? t.dims : [t.data.length], axis);
   const X = t.data;
   const Y = TypedArrayUtil.createTypedArray('int32', resultDims.length === 0 ? 1 : ShapeUtil.size(resultDims));
@@ -395,9 +380,7 @@ export function max(t: Tensor, axis = 0, keepDims = false): Tensor {
     throw new Error('Unsupported type for transform');
   }
   const rank = t.dims ? t.dims.length : 1;
-  if (axis < 0 || axis >= rank) {
-    throw new Error('axis specified is out of range for given tensor');
-  }
+  axis = ShapeUtil.getActualAxisFromNegativeValue(axis, rank);
   const [reduceDims, resultDims] = ShapeUtil.splitDimsIntoTwo(t.dims ? t.dims : [t.data.length], axis);
   const X = t.data as NumberDataType;
   const Y = TypedArrayUtil.createTypedArray(t.type, resultDims.length === 0 ? 1 : ShapeUtil.size(resultDims));

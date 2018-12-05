@@ -1,22 +1,6 @@
 import ndarray from 'ndarray';
 import {Type, NumberDataType} from './yoloPostprocess';
-
-// check the inputs shape before running an OP.
-// return true when the inputs pass the check
-// return false when the inputs do not fit the requirement
-// throw exception when fatal error or not implemented
-export function checkInputsShape(inputs: any[], ...expectedDimensions: number[]): boolean {
-    if (!inputs || inputs.length !== expectedDimensions.length) {
-      return false;
-    }
-    for (let i = 0; i < inputs.length; i++) {
-      if (!inputs[i].dims || inputs[i].dims.length !== expectedDimensions[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-  
+ 
   export class BroadcastUtil {
     /**
      * Calculate the expected shape when broadcasting 2 tensors
@@ -150,7 +134,6 @@ export function checkInputsShape(inputs: any[], ...expectedDimensions: number[])
       return true;
     }
   }
-  
   // copy array helper
   // mimics memcpy as much as possible
   export function arrayCopyHelper(
@@ -171,89 +154,6 @@ export function checkInputsShape(inputs: any[], ...expectedDimensions: number[])
   
     for (let offset = 0; offset < blockSize; offset++) {
       target[targetIndex + offset] = source[sourceIndex + offset];
-    }
-  }
-  
-  export class GemmUtil {
-    // will make sure input shapes are compatible for this op
-    // and return back the shape of the output in the form of a tuple
-    // will throw exception if the input shapes are not compatible
-    static getShapeOfGemmResult(
-        leftShape: ReadonlyArray<number>, transLeft: boolean, rightShape: ReadonlyArray<number>, transRight: boolean,
-        biasShape: ReadonlyArray<number>): number[] {
-      if (leftShape.length !== 2 || rightShape.length !== 2) {
-        throw new Error(`shape need to be of size 2`);
-      }
-  
-      let M: number;
-      let K: number;
-      let N: number;
-  
-      if (transLeft) {
-        M = leftShape[1];
-        K = leftShape[0];
-      } else {
-        M = leftShape[0];
-        K = leftShape[1];
-      }
-  
-      let kDim = -1;
-  
-      if (transRight) {
-        N = rightShape[0];
-        kDim = 1;
-      } else {
-        N = rightShape[1];
-        kDim = 0;
-      }
-  
-      if (rightShape[kDim] !== K) {
-        throw new Error(`dimension mismatch`);
-      }
-  
-      if (M <= 0 || N <= 0 || K <= 0) {
-        throw new Error(`invalid shape specified`);
-      }
-  
-      if (!BroadcastUtil.isValidBroadcast(biasShape, [M, N])) {
-        throw new Error(`gemm: invalid bias shape for broadcast`);
-      }
-  
-      return [M, N];
-    }
-  }
-  
-  export class NdarrayUtil {
-    /**
-     * Get the constructor of the data type in the given ndarray
-     */
-    static ctor<T>(x: ndarray<T>) {
-      return x.data.constructor as /* ArrayConstructor | Int8ArrayConstructor
-          | Int16ArrayConstructor | Int32ArrayConstructor | Uint8ArrayConstructor
-          | Uint16ArrayConstructor | Uint32ArrayConstructor |
-          Float32ArrayConstructor | Float64ArrayConstructor |
-          Uint8ClampedArrayConstructor*/
-      {
-        new (arrayLength: number): ndarray.Data<T>;
-      };
-    }
-  
-    /**
-     * Create a shallow copy of the given ndarray
-     */
-    static copy<T extends ndarray<U>, U>(x: T): T {
-      return ndarray(x.data, x.shape, x.stride, x.offset) as T;
-    }
-  
-    /**
-     * Create a new ndarray, using the same underlying data type as the given
-     * ndarray
-     * @param protoType the ndarray to take as a prototype for data type
-     * @param dims the dimensions of the new ndarray
-     */
-    static create<T extends ndarray<U>, U>(protoType: T, dims: number[]): T {
-      const buf = new (NdarrayUtil.ctor(protoType))(ShapeUtil.size(dims));
-      return ndarray(buf, dims) as T;
     }
   }
   
@@ -408,7 +308,7 @@ export function checkInputsShape(inputs: any[], ...expectedDimensions: number[])
       return indices;
     }
     static getActualAxisFromNegativeValue(axis: number, tensorRank: number): number {
-      if (axis < -tensorRank && axis > (tensorRank - 1)) {
+      if (axis < -tensorRank && axis >= tensorRank - 1) {
         throw new Error('unsupported axis for this operation.');
       }
       return axis < 0 ? axis + tensorRank : axis;
@@ -544,336 +444,19 @@ export function checkInputsShape(inputs: any[], ...expectedDimensions: number[])
     return [picked, remnants];
 
   }
- }
+}
   
-  // bunch of helper methods that do a variety of math operations
-  export class MathUtil {
-    // y = (x*x) + y
-    static sqr(
-        target: NumberDataType, source: NumberDataType, targetIndex: number, sourceIndex: number,
-        blockSize: number) {
-      if (sourceIndex < 0 || sourceIndex >= source.length) {
-        throw new Error(`sourceIndex out of bounds`);
-      }
-      if (targetIndex < 0 || targetIndex >= target.length) {
-        throw new Error(`targetIndex out of bounds`);
-      }
-      if (sourceIndex + blockSize > source.length) {
-        throw new Error(`source indices to be copied are outside bounds`);
-      }
-      if (targetIndex + blockSize > target.length) {
-        throw new Error(`target array is too small to hold result`);
-      }
-  
-      for (let offset = 0; offset < blockSize; offset++) {
-        target[targetIndex + offset] += Math.pow(source[sourceIndex + offset], 2);
-      }
-    }
-  
-    // y = ax + y
-    static axpy(
-        target: NumberDataType, source: NumberDataType, targetIndex: number, sourceIndex: number,
-        blockSize: number, alpha: number) {
-      if (sourceIndex < 0 || sourceIndex >= source.length) {
-        throw new Error(`sourceIndex out of bounds`);
-      }
-      if (targetIndex < 0 || targetIndex >= target.length) {
-        throw new Error(`targetIndex out of bounds`);
-      }
-      if (sourceIndex + blockSize > source.length) {
-        throw new Error(`source indices to be copied are outside bounds`);
-      }
-      if (targetIndex + blockSize > target.length) {
-        throw new Error(`target array is too small to hold result`);
-      }
-  
-      for (let offset = 0; offset < blockSize; offset++) {
-        target[targetIndex + offset] += (alpha * source[sourceIndex + offset]);
-      }
-    }
-  
-    // y = pow(x, b)
-    static powx(
-        target: NumberDataType, source: NumberDataType, targetIndex: number, sourceIndex: number,
-        blockSize: number, b: number) {
-      if (sourceIndex < 0 || sourceIndex >= source.length) {
-        throw new Error(`sourceIndex out of bounds`);
-      }
-      if (targetIndex < 0 || targetIndex >= target.length) {
-        throw new Error(`targetIndex out of bounds`);
-      }
-      if (sourceIndex + blockSize > source.length) {
-        throw new Error(`source indices to be copied are outside bounds`);
-      }
-      if (targetIndex + blockSize > target.length) {
-        throw new Error(`target array is too small to hold result`);
-      }
-  
-      for (let offset = 0; offset < blockSize; offset++) {
-        target[targetIndex + offset] = Math.pow(source[sourceIndex + offset], b);
-      }
-    }
-  
-    // y = x * y
-    static mul(
-        target: NumberDataType, source: NumberDataType, targetIndex: number, sourceIndex: number,
-        blockSize: number) {
-      if (sourceIndex < 0 || sourceIndex >= source.length) {
-        throw new Error(`sourceIndex out of bounds`);
-      }
-      if (targetIndex < 0 || targetIndex >= target.length) {
-        throw new Error(`targetIndex out of bounds`);
-      }
-      if (sourceIndex + blockSize > source.length) {
-        throw new Error(`source indices to be copied are outside bounds`);
-      }
-      if (targetIndex + blockSize > target.length) {
-        throw new Error(`target array is too small to hold result`);
-      }
-  
-      for (let offset = 0; offset < blockSize; offset++) {
-        target[targetIndex + offset] = (source[sourceIndex + offset] * target[targetIndex + offset]);
-      }
-    }
-  }
-  
-  export class SplitUtil {
-    /**
-     * Calculates new Shapes from existing one and the splits given along the axis provides
-     * @param dims Shape of the Tensor to be splitted into two or more Shapes
-     * @param axis The dimension along which the Tensor will be split
-     * @param splits Offsets for the start of each split
-     */
-    static splitShape(dims: ReadonlyArray<number>, axis: number, split: number[], numOutputs?: number):
-        [number[][], number[]] {
-      if (split.length === 0) {
-        if (!numOutputs) {
-          throw new Error(`need to know number of outputs when the 'split' attribute is not specified`);
-        }
-        SplitUtil.determineSplit(dims[axis], numOutputs, split);
-      }
-  
-      const shapes: number[][] = [];
-      const offsets = [0];
-      for (let i = 0; i < split.length; ++i) {
-        if (i !== 0) {
-          offsets.push(offsets[i - 1] + split[i - 1]);
-        }
-        const shape = dims.slice();
-        shape[axis] = split[i];
-        shapes.push(shape);
-      }
-      return [shapes, offsets];
-    }
-  
-    static determineSplit(numElementsAlongAxis: number, numOutputs: number, split: number[]) {
-      // If 'split' is not specified by the user, we need to partition the number of elements equally among the outputs
-      if (numElementsAlongAxis % numOutputs !== 0) {
-        throw new Error(`cannot split tensor to equal sized parts`);
-      }
-      for (let i = 0; i < numOutputs; ++i) {
-        split.push(numElementsAlongAxis / numOutputs);
-      }
-    }
-  }
-  
-  export class PoolConvUtil {
-    /**
-     * Adjust the kernel, strides, pads to correct rank. Set to default value if not present
-     * @param isGlobalOperator If true, perform global pooling.
-     * @param inputDims The input tensor dimension.
-     * @param kernelShape The size of the kernel along each axis.
-     * @param strides Stride along each axis.
-     * @param pads Padding for the beginning and ending along each axis.
-     */
-    static adjustPoolAttributes(
-        isGlobalOperator: boolean, inputDims: ReadonlyArray<number>, kernelShape: number[], strides: number[],
-        pads: number[]) {
-      if (!isGlobalOperator && kernelShape.length !== inputDims.length - 2) {
-        throw new Error(`length of specified kernel shapes should be 2 less than length of input dimensions`);
-      }
-  
-      if (isGlobalOperator) {
-        // adjust kernel shape to cover the input dims
-        for (let dim = 0; dim < inputDims.length - 2; dim++) {
-          if (dim >= kernelShape.length) {
-            kernelShape.push(inputDims[dim + 2]);
-          } else {
-            kernelShape[dim] = inputDims[dim + 2];
-          }
-        }
-      }
-  
-      // adjust strides length to match kernel shape length
-      for (let dim = 0; dim < kernelShape.length; dim++) {
-        if (dim < strides.length) {
-          if (strides[dim] < 0) {
-            throw new Error(`strides should be greater than or equal to 1`);
-          }
-        } else {
-          strides.push(1);
-        }
-      }
-  
-      // adjust pads length to match 2 * kernel shape length
-      for (let dim = 0; dim < kernelShape.length * 2; dim++) {
-        if (dim < pads.length) {
-          if (pads[dim] < 0) {
-            throw new Error(`pad should be greater than or equal to 1`);
-          }
-        } else {
-          pads.push(0);
-        }
-      }
-  
-      // sanity checks for values in kernel shapes and pads
-      for (let dim = 0; dim < kernelShape.length; dim++) {
-        if (kernelShape[dim] <= 0) {
-          throw new Error(`kernel shapes need to be greater than 0`);
-        }
-  
-        if (pads[dim] >= kernelShape[dim] || pads[dim + kernelShape.length] >= kernelShape[dim]) {
-          throw new Error(`pads should be smaller than kernel`);
-        }
-      }
-    }
-  
-    // adjust pad values based on 'autoPad' attribute
-    static adjustPadsBasedOnAutoPad(
-        inputDims: ReadonlyArray<number>, strides: number[], kernelShape: number[], pads: number[], autoPad?: string) {
-      if (!autoPad) {
-        return;
-      }
-  
-      if (pads.length !== 2 * (inputDims.length - 2)) {
-        throw new Error('length of pads should be twice the length of data dimensions');
-      }
-  
-      if (strides.length !== (inputDims.length - 2)) {
-        throw new Error('length of strides should be the length of data dimensions');
-      }
-  
-      if (kernelShape.length !== (inputDims.length - 2)) {
-        throw new Error('length of kernel shapes should be the length of data dimensions');
-      }
-  
-      for (let dim = 0; dim < inputDims.length - 2; dim++) {
-        PoolConvUtil.adjustPadAndReturnShape(
-            inputDims[dim + 2], strides[dim], kernelShape[dim], pads, dim, dim + inputDims.length - 2, autoPad);
-      }
-    }
-  
-    /**
-     * Calculate the output shape for Pool ops based on input attributes. (Should be used only for Pool ops)
-     * @param isGlobalOperator If true, perform global pooling.
-     * @param inputDims The input tensor dimension. (inputs[0].dims)
-     * @param strides Stride along each axis.
-     * @param kernelShape The size of the kernel along each axis.
-     * @param pads Padding for the beginning and ending along each axis.
-     * @param autoPad DEPRECATED attribute supported for legacy models. Specifies how to implicitly 
-     * calculate pads in each
-     *     dimension. Can take values NOTSET, SAME_UPPER, SAME_LOWER, or VALID.
-     */
-    static computePoolOutputShape(
-        isGlobalOperator: boolean, inputDims: ReadonlyArray<number>, strides: number[], kernelShape: number[],
-        pads: number[], autoPad?: string): number[] {
-      if (inputDims.length <= 0) {
-        throw new Error(`input shape must be of size greater than 0`);
-      }
-  
-      // Add batch size and number of channels of output
-      const outputDims = [inputDims[0], inputDims[1]];
-  
-      PoolConvUtil.computeShapeHelper(isGlobalOperator, inputDims, outputDims, strides, kernelShape, pads, autoPad);
-      return outputDims;
-    }
-  
-    /**
-     * Calculate the output shape for Conv op based on input attributes. (Should be used only for Conv op)
-     * @param inputDims The input tensor dimension. (inputs[0].dims)
-     * @param filterDims The filter tensor dimension. (inputs[1].dims)
-     * @param strides Stride along each axis.
-     * @param kernelShape The size of the kernel along each axis.
-     * @param pads Padding for the beginning and ending along each axis.
-     * @param autoPad DEPRECATED attribute supported for legacy models. Specifies how to implicitly 
-     * calculate pads in each
-     *     dimension. Can take values NOTSET, SAME_UPPER, SAME_LOWER, or VALID.
-     */
-    static computeConvOutputShape(
-        inputDims: ReadonlyArray<number>, filterDims: ReadonlyArray<number>, strides: number[], kernelShape: number[],
-        pads: number[], autoPad?: string): number[] {
-      if (inputDims.length <= 0 || filterDims.length <= 0) {
-        throw new Error(`invalid input tensor dims or invalid filter tensor dims`);
-      }
-  
-      // Add batch size and number of channels of output
-      const outputDims = [inputDims[0], filterDims[0]];
-  
-      PoolConvUtil.computeShapeHelper(false, inputDims, outputDims, strides, kernelShape, pads, autoPad);
-      return outputDims;
-    }
-  
-    // will compute output shapes for data dimensions ONLY (i.e.) no batch size and channels
-    // called by computePoolOutputShape() and computeConvOutputShape()
-    // adjust pads based on 'autoPad' attribute prior to shape computation
-    private static computeShapeHelper(
-        isGlobalOperator: boolean, inputDims: ReadonlyArray<number>, outputDims: number[], strides: number[],
-        kernelShape: number[], pads: number[], autoPad?: string) {
-      if (isGlobalOperator) {
-        for (let dim = 0; dim < inputDims.length - 2; dim++) {
-          outputDims.push(1);
-        }
-      } else {
-        for (let dim = 0; dim < inputDims.length - 2; dim++) {
-          outputDims.push(PoolConvUtil.adjustPadAndReturnShape(
-              inputDims[dim + 2], strides[dim], kernelShape[dim], pads, dim, dim + inputDims.length - 2, autoPad));
-        }
-      }
-    }
-  
-    // helper for computeShapeHelper() and adjustPadsBasedOnAutoPad()
-    // adjusts pad value for given 'autoPad' string and computes output shape along a particular dimension
-    private static adjustPadAndReturnShape(
-        inSize: number, stride: number, kernel: number, pads: number[], padHeadIndex: number, padTailIndex: number,
-        autoPad?: string): number {
-      if (autoPad && autoPad !== 'NOTSET') {
-        switch (autoPad) {
-          case 'VALID':
-            pads[padHeadIndex] = 0;
-            pads[padTailIndex] = 0;
-            return Math.floor(((inSize - kernel) / stride) + 1);
-          case 'SAME_LOWER':
-            const legacyTargetSize1 = (inSize + stride - 1) / stride;
-            const padNeeded1 = (legacyTargetSize1 - 1) * stride + kernel - inSize;
-            pads[padHeadIndex] = Math.floor((padNeeded1 + 1) / 2);
-            pads[padTailIndex] = padNeeded1 - pads[padHeadIndex];
-            return Math.floor(((inSize + padNeeded1 - kernel) / stride) + 1);
-          case 'SAME_UPPER':
-            const legacyTargetSize = (inSize + stride - 1) / stride;
-            const padNeeded = (legacyTargetSize - 1) * stride + kernel - inSize;
-            pads[padHeadIndex] = Math.floor(padNeeded / 2);
-            pads[padTailIndex] = padNeeded - pads[padHeadIndex];
-            return Math.floor(((inSize + padNeeded - kernel) / stride) + 1);
-          default:
-            throw new Error(`Unsupported AutoPad type`);
-        }
-      } else {
-        return Math.floor(((inSize + pads[padHeadIndex] + pads[padTailIndex] - kernel) / stride) + 1);
-      }
-    }
-  }
-
 export class TypedArrayUtil {
-    static createTypedArray(type: string, size: number): Uint8Array|Int32Array|Float32Array {
-        switch (type) {
-            case 'bool':
-            return new Uint8Array(size);
-            case 'int32':
-            return new Int32Array(size);
-            case 'float32':
-            return new Float32Array(size);
-            default:
-            throw new Error('Unsupported type');
-        }
-    }
+  static createTypedArray(type: string, size: number): Uint8Array|Int32Array|Float32Array {
+      switch (type) {
+          case 'bool':
+          return new Uint8Array(size);
+          case 'int32':
+          return new Int32Array(size);
+          case 'float32':
+          return new Float32Array(size);
+          default:
+          throw new Error('Unsupported type');
+      }
+  }
 }

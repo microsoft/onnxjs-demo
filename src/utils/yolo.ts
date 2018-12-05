@@ -22,13 +22,10 @@ const INPUT_DIM = 416;
 
 export async function postprocess(outputTensor: Tensor, numClasses: number) {
   const [boxXy, boxWh, boxConfidence, boxClassProbs ] = yolo_head(outputTensor, YOLO_ANCHORS, 20);
-    console.log('time4 = ' + new Date().getTime());
 		const allBoxes = yolo_boxes_to_corners(boxXy, boxWh);
-    console.log('time5 = ' + new Date().getTime());
 		const [outputBoxes, scores, classes] = await yolo_filter_boxes(
     allBoxes, boxConfidence, boxClassProbs, DEFAULT_FILTER_BOXES_THRESHOLD);
     // If all boxes have been filtered out
-    console.log('time6 = ' + new Date().getTime());
 		if (outputBoxes == null) {
       return [];
     }
@@ -79,7 +76,6 @@ export async function postprocess(outputTensor: Tensor, numClasses: number) {
 
     results.push(resultObj);
   });
-  console.log(results);
   return results;
 }
 

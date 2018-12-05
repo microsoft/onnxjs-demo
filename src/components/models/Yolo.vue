@@ -63,14 +63,10 @@ export default class Yolo extends Vue{
   async postprocess(tensor: Tensor, inferenceTime: number) {
     try {
       const originalOutput = new Tensor(tensor.data as Float32Array, 'float32', [1, 125, 13, 13]);
-      console.log('originalOutput ', originalOutput);
       const outputTensor = yoloTransforms.transpose(originalOutput, [0, 2, 3, 1]);
 
-      console.log('time3 = ' + new Date().getTime());
-          
       // postprocessing
       const boxes = await yolo.postprocess(outputTensor, 20);
-      console.log('postProcessedData ', boxes);
       boxes.forEach(box => {
         const {
           top, left, bottom, right, classProb, className,
@@ -80,7 +76,6 @@ export default class Yolo extends Vue{
           `${className} Confidence: ${Math.round(classProb * 100)}% Time: ${inferenceTime.toFixed(1)}ms`);
       });
     } catch (e) {
-      console.log(e);
       alert('Model is not valid!');
     }
   }
