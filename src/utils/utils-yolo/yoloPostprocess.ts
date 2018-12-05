@@ -39,14 +39,12 @@ export function linspace(start: number, stop: number, num: number): Tensor {
   if (num === 0) {
     throw new Error('Must request atleast one sample');
   }
-
   const increments = (stop - start) / (num - 1);
   const data = TypedArrayUtil.createTypedArray('float32', num);
   data[0] = start;
   for (let i = 1; i < data.length; i++) {
     data[i] = data[i - 1] + increments;
   }
-
   return new Tensor(data, 'float32', [num]);
 }
 
@@ -72,7 +70,6 @@ export function range(start: number, stop: number, step = 1, dtype: NumberType =
   for (let i = 1; i < data.length; i++) {
     data[i] = data[i - 1] + step;
   }
-
   return new Tensor(data, dtype, [size]);
 }
 
