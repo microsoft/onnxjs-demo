@@ -1,17 +1,8 @@
-// Heavily derived from YAD2K (https://github.com/allanzelener/YAD2K)
+// Heavily derived from YAD2K (https://github.com/ModelDepot/tfjs-yolo-tiny-demo)
+
 import classNames from '../data/yolo_classes';
 import * as yolo from './utils-yolo/yoloPostprocess';
 import {Tensor} from 'onnxjs';
-
-// export const YOLO_ANCHORS = tf.tensor2d([
-//   [0.57273, 0.677385], [1.87446, 2.06253], [3.33843, 5.47434],
-//   [7.88282, 3.52778], [9.77052, 9.16828],
-// ]);
-
-// export const YOLO_ANCHORS = tf.tensor2d([[1.08, 1.19], [3.42, 4.41], 
-//  [6.63, 11.38], [9.42, 5.11], 
-//  [16.62, 10.52]
-//]);
 
 export const YOLO_ANCHORS = new Tensor(Float32Array.from([1.08, 1.19, 3.42, 4.41, 6.63, 11.38, 
   9.42, 5.11, 16.62, 10.52]), 'float32', [5,2]);
