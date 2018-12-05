@@ -4,6 +4,8 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+src/**/*.js
+src/**/*.js.map
 
 # Runtime data
 pids
@@ -35,6 +37,9 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+
+#Types
+types/
 
 # TypeScript v1 declaration files
 typings/
