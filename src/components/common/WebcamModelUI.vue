@@ -391,7 +391,6 @@ export default class WebcamModelUI extends Vue{
     this.clearRects();
     this.postprocess(outputTensor, this.inferenceTime);
     this.sessionRunning = false;
-
   }
 
   clearCanvas() {

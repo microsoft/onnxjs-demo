@@ -83,7 +83,8 @@ export default class App extends Vue {
 @import './variables.css';
 
 .application {
-  font-family: var(--font-sans-serif)!important;;
+  font-family: var(--font-sans-serif)!important;
+  font-size: 18px;
 }
 
 .application.theme--light {
