@@ -36,6 +36,7 @@ const DEMO_INFO = [
   { model: 'SqueezeNet', title: 'SqueezeNet, trained on ImageNet', path: 'squeezenet'},
   { model: 'ResNet50', title: 'ResNet, trained on ImageNet', path: 'resnet50'},  
   { model: 'Emotion FerPlus', title: 'Emotion FerPlus', path: 'emotion_ferplus'},
+  { model: 'Yolo', title: 'Yolo', path: 'yolo'},
   { model: 'MNIST', title: 'MNIST', path: 'mnist'}, 
 ];
 

@@ -83,7 +83,6 @@
 
 import {InferenceSession, Tensor} from 'onnxjs';
 import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
-import * as tf from '@tensorflow/tfjs';
 import loadImage from 'blueimp-load-image';
 import ModelStatus from '../common/ModelStatus.vue';
 import { runModelUtils } from '../../utils';
@@ -107,7 +106,6 @@ export default class WebcamModelUI extends Vue{
   videoOrigHeight: number;
   webcamContainer : HTMLElement;
   inferenceTime: number;
-  outputTensor: tf.Tensor4D;
   session: InferenceSession;
   gpuSession: InferenceSession | undefined;
   cpuSession: InferenceSession | undefined;
@@ -348,7 +346,7 @@ export default class WebcamModelUI extends Vue{
   async stopCamera() {
     this.webcamElement.pause();
     while (this.sessionRunning) {
-      await tf.nextFrame();
+      await new Promise(resolve => requestAnimationFrame(() => resolve()));
     }
     this.clearRects();
     this.webcamEnabled = false;
@@ -384,7 +382,7 @@ export default class WebcamModelUI extends Vue{
       // run model
       await this.runModel(ctx);
       for (let i = 0; i < 5; i++) {
-        await tf.nextFrame();
+        await new Promise(resolve => requestAnimationFrame(() => resolve()));
       }
     }
   }
@@ -396,7 +394,6 @@ export default class WebcamModelUI extends Vue{
     this.clearRects();
     this.postprocess(outputTensor, this.inferenceTime);
     this.sessionRunning = false;
-
   }
 
   clearRects() {

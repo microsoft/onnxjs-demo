@@ -21,8 +21,11 @@ The demo provides four scenarios based on four different ONNX pre-trained deep l
 ### 3. FER+ Emotion Recognition
 [Emotion Ferplus](https://github.com/onnx/models/tree/master/emotion_ferplus)
  is a deep convolutional neural network for emotion recognition in faces. In the demo, you can choose to either select an image with any human face or to start a webcam and see what emotion it's showing.
+
+### 4. Yolo
+[Yolo](https://github.com/onnx/models/tree/master/tiny_yolov2) is a real-time neural network for object detection. It can detect 20 different objects such as person, potted plant and chair. In the demo, you can choose to either select an image or start a webcam to see what objects are in it. 
                                        
-### 4. MNIST
+### 5. MNIST
 
 [MNIST](https://github.com/onnx/models/tree/master/mnist) is a convolutional neural network that predicts handwritten digits. In the demo, you can draw any number on the canvas and the model will tell you what number it is!
 

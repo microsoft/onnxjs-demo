@@ -4,6 +4,7 @@ import Home from '../components/Home.vue';
 import Resnet50 from '../components/models/Resnet50.vue';
 import SqueezeNet from '../components/models/Squeezenet.vue';
 import Emotion from '../components/models/Emotion.vue';
+import Yolo from '../components/models/Yolo.vue';
 import MNIST from '../components/models/MNIST.vue';
 
 Vue.use(Router);
@@ -28,6 +29,10 @@ export default new Router({
     {
       path:'/emotion_ferplus',
       component: Emotion,
+    },
+    {
+      path: '/yolo',
+      component: Yolo,
     },
     {
       path:'/mnist',
