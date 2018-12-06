@@ -20,7 +20,7 @@ import {runModelUtils, yolo, yoloTransforms} from '../../utils/index';
 import { YOLO_IMAGE_URLS } from '../../data/sample-image-urls';
 import {Tensor, InferenceSession} from 'onnxjs';
 
-const MODEL_FILEPATH_PROD = `/yolo.onnx`;
+const MODEL_FILEPATH_PROD = `/onnxjs-demo/yolo.onnx`;
 const MODEL_FILEPATH_DEV = '/yolo.onnx';
 
 @Component({
