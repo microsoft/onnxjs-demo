@@ -24,7 +24,7 @@
         </v-flex>
       </v-layout>
       <v-layout row wrap justify-center align-center class="image-panel elevation-1">
-        <v-flex xs5>
+        <v-flex sm6 md4>
           <div class="input-column">
             <div class="input-container">
               <div class="input-label">Draw any digit (0-9) here </div>
@@ -54,7 +54,7 @@
           </div>
         </v-flex>
           
-        <v-flex xs5 style="height:200px">
+        <v-flex sm6 md4>
           <div class="output-column">
             <div class="output">
               <div class="output-class"
@@ -243,12 +243,15 @@ export default class DrawingModelUI extends Vue{
     this.strokes.push([]);
     const points = this.strokes[this.strokes.length - 1];
     points.push(mathUtils.getCoordinates(e));
+    this.draw(e);
   }
 
   draw(e: any) {
     if (!this.drawing) {
       return;
     }
+    // disable scrolling behavior when drawing
+    e.preventDefault();
     const ctx = (document.getElementById('input-canvas') as HTMLCanvasElement)
       .getContext('2d') as CanvasRenderingContext2D;
     ctx.lineWidth = 20;
