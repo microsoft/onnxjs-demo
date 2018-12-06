@@ -17,7 +17,7 @@
     "ndarray-resample": "^1.0.1",
     "ndarray-squeeze": "^1.0.2",
     "ndarray-unpack": "^1.0.0",
-    "onnxjs": "^0.1.0",
+    "onnxjs": "^0.1.1",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^7.0.0",
