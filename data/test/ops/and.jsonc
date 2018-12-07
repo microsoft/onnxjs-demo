@@ -48,6 +48,76 @@
             "type": "bool"
           }
         ]
+      },
+      {
+        "name": "Scalar T[2,2]",
+        "inputs": [
+          {
+            "data": [true],
+            "dims": [],
+            "type": "bool"
+          },
+          {
+            "data": [
+              false, false, false, false
+            ],
+            "dims": [2,2],
+            "type":"bool"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [false, false, false, false],
+            "dims": [2,2],
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "name": "T[2,2] Scalar",
+        "inputs": [
+          {
+            "data": [
+              true, true, true, true
+            ],
+            "dims": [2,2],
+            "type":"bool"
+          },
+          {
+            "data": [false],
+            "dims": [],
+            "type": "bool"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [false, false, false, false],
+            "dims": [2,2],
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "name": "Scalar Scalar",
+        "inputs": [
+          {
+            "data": [true],
+            "dims": [],
+            "type":"bool"
+          },
+          {
+            "data": [true],
+            "dims": [],
+            "type": "bool"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [true],
+            "dims": [],
+            "type": "bool"
+          }
+        ]
       }
     ]
   }
