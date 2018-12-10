@@ -50,14 +50,14 @@
             </div>
           </div>
           <v-card-text>or</v-card-text>
-          <v-btn 
-            :disabled="modelLoading || modelInitializing || modelLoadingError || webcamEnabled" 
-            style="margin: 0; width: 30%" class="inputs text-xs-center">
-            <label style="width: 100%; height: 100%">
+          <div 
+            :disabled="modelLoading || modelInitializing || modelLoadingError || webcamEnabled"
+            style="margin: 0; width: 30%" >
+            <label class="inputs">
               UPLOAD IMAGE
               <input style="display: none" type="file" @change="handleFileChange"/>
             </label>
-          </v-btn>
+          </div>
           <v-card-text>or</v-card-text>
           
           <v-btn style="margin: 0; width: 30%" v-on:click="webcamController" :disabled="modelLoadingError">
@@ -486,5 +486,24 @@ export default class WebcamModelUI extends Vue{
       white-space: nowrap;
     }
   }
+}
+.inputs {
+  margin: auto;
+  background: #f5f5f5;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2),0 2px 2px 0 rgba(0, 0, 0, .14),0 1px 5px 0 rgba(0, 0, 0, .12);
+  align-items: center;
+  border-radius: 2px;
+  display: inline-flex;
+  width: 100%;
+  height: 38px;
+  font-size: 14px;
+  transition: .3s cubic-bezier(.25,.8,.5,1),color 1ms;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.inputs:focus, .inputs:hover {
+	position: relative;
+  background: rgba(0, 0, 0, .12);
 }
 </style>

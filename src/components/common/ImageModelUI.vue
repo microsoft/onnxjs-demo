@@ -43,14 +43,12 @@
               ></v-select>
             </v-flex>
             <v-flex class="text-xs-center">or</v-flex>
-            <v-btn :disabled="modelLoading || modelInitializing || modelLoadingError" class="inputs">
-              <label>
-                <div>
-                  <span>UPLOAD IMAGE</span>
-                </div>
-                <input style="display: none" type="file" @change="handleFileChange"/>
-              </label>
-            </v-btn>
+            <label :disabled="modelLoading || modelInitializing || modelLoadingError" class="inputs">
+              <div>
+                <span>UPLOAD IMAGE</span>
+              </div>
+              <input style="display: none" type="file" @change="handleFileChange"/>
+            </label>
           </v-layout>
           <!-- input image -->
           <div v-if="imageLoadingError" class="error-message" style="padding-top: 30px">Error loading URL</div>
@@ -338,7 +336,20 @@ export default class ImageModelUI extends Vue{
 
 .inputs {
   margin: auto;
-  text-align: center;
+  background: #f5f5f5;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2),0 2px 2px 0 rgba(0, 0, 0, .14),0 1px 5px 0 rgba(0, 0, 0, .12);
+  align-items: center;
+  border-radius: 2px;
+  display: inline-flex;
+  height: 40px;
+  font-size: 14px;
+  transition: .3s cubic-bezier(.25,.8,.5,1),color 1ms;
+  padding: 0 16px;
+}
+
+.inputs:focus, .inputs:hover {
+	position: relative;
+  background: rgba(0, 0, 0, .12);
 }
 
 .input-label {
