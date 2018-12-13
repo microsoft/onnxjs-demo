@@ -55,6 +55,23 @@
             "type": "bool"
           }
         ]
+      },
+      {
+        "name": "Scalar",
+        "inputs": [
+          {
+            "data": [true],
+            "dims": [],
+            "type": "bool"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [false],
+            "dims": [],
+            "type": "bool"
+          }
+        ]
       }
     ]
   }

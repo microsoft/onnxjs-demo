@@ -94,6 +94,76 @@
             "type": "float32"
           }
         ]
+      },
+      {
+        "name": "Scalar T[2,2]",
+        "inputs": [
+          {
+            "data": [1],
+            "dims": [],
+            "type": "float32"
+          },
+          {
+            "data": [
+              2,2,2,2
+            ],
+            "dims": [2,2],
+            "type":"float32"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [3,3,3,3],
+            "dims": [2,2],
+            "type": "float32"
+          }
+        ]
+      },
+      {
+        "name": "T[2,2] Scalar",
+        "inputs": [
+          {
+            "data": [
+              2,2,2,2
+            ],
+            "dims": [2,2],
+            "type":"float32"
+          },
+          {
+            "data": [1],
+            "dims": [],
+            "type": "float32"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [3,3,3,3],
+            "dims": [2,2],
+            "type": "float32"
+          }
+        ]
+      },
+      {
+        "name": "Scalar Scalar",
+        "inputs": [
+          {
+            "data": [1],
+            "dims": [],
+            "type":"float32"
+          },
+          {
+            "data": [1],
+            "dims": [],
+            "type": "float32"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [2],
+            "dims": [],
+            "type": "float32"
+          }
+        ]
       }
     ]
   }

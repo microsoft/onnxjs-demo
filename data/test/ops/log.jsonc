@@ -56,6 +56,23 @@
             "type": "float32"
           }
         ]
+      },
+      {
+        "name": "Scalar",
+        "inputs": [
+          {
+            "data": [1],
+            "dims": [],
+            "type": "float32"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [0],
+            "dims": [],
+            "type": "float32"
+          }
+        ]
       }
     ]
   }

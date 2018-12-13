@@ -70,6 +70,76 @@
             "type": "bool"
           }
         ]
+      },
+      {
+        "name": "Scalar T[2,2]",
+        "inputs": [
+          {
+            "data": [1],
+            "dims": [],
+            "type": "float32"
+          },
+          {
+            "data": [
+              2,2,2,2
+            ],
+            "dims": [2,2],
+            "type":"float32"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [false,false,false,false],
+            "dims": [2,2],
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "name": "T[2,2] Scalar",
+        "inputs": [
+          {
+            "data": [
+              2,2,2,2
+            ],
+            "dims": [2,2],
+            "type":"float32"
+          },
+          {
+            "data": [2],
+            "dims": [],
+            "type": "float32"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [true, true, true, true],
+            "dims": [2,2],
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "name": "Scalar Scalar",
+        "inputs": [
+          {
+            "data": [1],
+            "dims": [],
+            "type":"float32"
+          },
+          {
+            "data": [1],
+            "dims": [],
+            "type": "float32"
+          }
+        ],
+        "outputs": [
+          {
+            "data": [true],
+            "dims": [],
+            "type": "bool"
+          }
+        ]
       }
     ]
   }
