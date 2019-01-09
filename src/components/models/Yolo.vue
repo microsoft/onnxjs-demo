@@ -51,9 +51,9 @@ export default class Yolo extends Vue{
     const dataTensor = ndarray(new Float32Array(data), [width, height, 4]);
     const dataProcessedTensor = ndarray(new Float32Array(width * height * 3), [1, 3, width, height]);
 
-    ops.assign(dataProcessedTensor.pick(0, 0, null, null), dataTensor.pick(null, null, 2));
+    ops.assign(dataProcessedTensor.pick(0, 0, null, null), dataTensor.pick(null, null, 0));
     ops.assign(dataProcessedTensor.pick(0, 1, null, null), dataTensor.pick(null, null, 1));
-    ops.assign(dataProcessedTensor.pick(0, 2, null, null), dataTensor.pick(null, null, 0));
+    ops.assign(dataProcessedTensor.pick(0, 2, null, null), dataTensor.pick(null, null, 2));
 
     const tensor = new Tensor(new Float32Array(width* height* 3), 'float32', [1, 3, width, height]);
     (tensor.data as Float32Array).set(dataProcessedTensor.data);
