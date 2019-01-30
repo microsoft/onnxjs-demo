@@ -1,3 +1,7 @@
+# Dependencies
+public/onnx-wasm.wasm
+public/onnx-worker.js
+
 # Logs
 logs
 *.log
