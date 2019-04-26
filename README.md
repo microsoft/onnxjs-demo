@@ -53,14 +53,7 @@ This will pack the source files into `/docs` folder and be ready for deployment.
 
 **- Electron support**
 
-Onnx.js demo can also serve as a Windows desktop app using [Electron](https://electronjs.org/). 
-
-First create a developer build of the app by running 
-```
-npm run build -- --mode developer
-```
-
-Then run
+After the source files are ready for deployment, you can run the following to serve the demo as a Windows desktop app using [Electron](https://electronjs.org/). 
 ```
 npm run electron-packager
 ```
