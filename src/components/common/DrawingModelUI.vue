@@ -305,7 +305,7 @@ export default class DrawingModelUI extends Vue{
   }
 }
 .input-column {
-  // height: 100%;
+  /* height: 100%; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -325,7 +325,7 @@ export default class DrawingModelUI extends Vue{
         font-size: 36px;
         color: #cccccc;
         position: absolute;
-        // right: -32px;
+        /* right: -32px; */
         top: 8px;
       }
     }
