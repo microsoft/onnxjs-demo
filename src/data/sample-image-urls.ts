@@ -51,11 +51,10 @@ export const YOLO_IMAGE_URLS = [
   { text: 'airplane', value: 'https://farm6.staticflickr.com/5590/14821526429_5c6ea60405_z_d.jpg' },
   { text: 'cat', value: 'https://i.imgur.com/CzXTtJV.jpg' },
   { text: 'dog', value: 'https://i.imgur.com/OB0y6MR.jpg' },    
-  { text: 'bicycle', value: ' http://farm3.static.flickr.com/2378/2178054924_423324aac8.jpg'},
+  { text: 'bicycle', value: ' https://farm3.staticflickr.com/2378/2178054924_423324aac8.jpg'},
   { text: 'bird', value: 'https://farm4.staticflickr.com/3075/3168662394_7d7103de7d_z_d.jpg' },
-  { text: 'boat', value: 'http://farm1.static.flickr.com/49/157534104_95ca4e0ae6.jpg '},
-  { text: 'bus', value: 'http://farm4.static.flickr.com/3319/3211138044_9232086442.jpg'}, 
-  { text: 'chair', value: 'http://farm4.static.flickr.com/3071/2939867225_dece34cd5d.jpg'},
-  { text: 'two chairs', value: 'http://farm4.static.flickr.com/3049/2327691528_f060ee2d1f.jpg'},
-  { text: 'cow', value: 'http://farm3.static.flickr.com/2042/2203964933_f1b80a18ba.jpg'}
+  { text: 'boat', value: 'https://farm1.staticflickr.com/49/157534104_95ca4e0ae6.jpg '},
+  { text: 'bus', value: 'https://farm4.staticflickr.com/3319/3211138044_9232086442.jpg'}, 
+  { text: 'two chairs', value: 'https://farm4.staticflickr.com/3049/2327691528_f060ee2d1f.jpg'},
+  { text: 'cow', value: 'https://farm3.staticflickr.com/2042/2203964933_f1b80a18ba.jpg'}
 ];
