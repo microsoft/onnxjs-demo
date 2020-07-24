@@ -6,6 +6,7 @@ import SqueezeNet from '../components/models/Squeezenet.vue';
 import Emotion from '../components/models/Emotion.vue';
 import Yolo from '../components/models/Yolo.vue';
 import MNIST from '../components/models/MNIST.vue';
+import FastNeuralStyle from '../components/models/FastNeuralStyle.vue';
 
 Vue.use(Router);
 
@@ -37,6 +38,10 @@ export default new Router({
     {
       path:'/mnist',
       component: MNIST,
+    },
+    {
+      path:'/fast_neural_style',
+      component: FastNeuralStyle,
     }
   ],
 });
