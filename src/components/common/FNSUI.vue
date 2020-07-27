@@ -108,7 +108,7 @@ export default class FNSUI extends Vue{
   @Prop({ type: String, required: true }) modelFilepath!: string;
   @Prop({ type: Number, required: true }) imageSize!: number;  
   @Prop({ type: Array, required: true}) imageUrls!: Array<{text: string, value: string}>;
-  @Prop({ type: Array, required: true}) styles!: string[];
+  @Prop({ type: Array, required: true}) styles!: Array<{text: string, value: string}>;
   @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
   @Prop({ type: Function, required: true }) getPredictedClass !: (output: Float32Array) => {};
 
@@ -127,7 +127,7 @@ export default class FNSUI extends Vue{
   imageURLSelect: null;
   imageURLSelectList: Array<{text: string, value: string}>;
   styleSelect: null;
-  styleSelectList: string[];
+  styleSelectList: Array<{text: string, value: string}>;
   imageLoading: boolean;
   imageLoadingError: boolean;
   output: Tensor.DataType;
@@ -157,6 +157,7 @@ export default class FNSUI extends Vue{
     // fetch the model file to be used later
     const response = await fetch(this.modelFilepath);
     this.modelFile = await response.arrayBuffer();
+    console.log(this.modelFilepath);
     try {
       await this.initSession();
     } catch (e) {
@@ -187,9 +188,12 @@ export default class FNSUI extends Vue{
       this.cpuSession = new InferenceSession({backendHint: this.sessionBackend});
       this.session = this.cpuSession;
     }    
-    
+    console.log('before loading model');
+    console.log(this.modelFile);
+
     try {
       await this.session!.loadModel(this.modelFile);
+      console.log('after loading model');
     } catch (e){
       this.modelLoading = false;
       this.modelInitializing = false;
@@ -223,7 +227,8 @@ export default class FNSUI extends Vue{
     try {
       await this.initSession();
     } catch (e) {
-      this.modelLoadingError = false;
+      console.log(e);
+      this.modelLoadingError = true;
     }
     return newVal;
   }
