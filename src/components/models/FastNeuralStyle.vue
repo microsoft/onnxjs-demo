@@ -19,8 +19,8 @@ import {SQUEEZENET_IMAGE_URLS} from '../../data/sample-image-urls';
 import {FNS_STYLES} from '../../data/fns_styles';
 import {imagenetUtils, mathUtils} from '../../utils/index';
 
-const MODEL_FILEPATH_PROD = `/onnxjs-demo/fns-models/mosaic.onnx`;
-const MODEL_FILEPATH_DEV = '/fns-models/mosaic.onnx';
+const MODEL_FILEPATH_PROD = `/onnxjs-demo/fns-models/mosaic-8.onnx`;
+const MODEL_FILEPATH_DEV = '/fns-models/mosaic-8.onnx';
 
 @Component({
   components: {

@@ -119,15 +119,17 @@ export default class FNSUI extends Vue{
   modelLoadingError: boolean;
   sessionRunning: boolean;  
   session: InferenceSession | undefined;
-  gpuSession: InferenceSession | undefined;
-  cpuSession: InferenceSession | undefined;
+  gpuSession: { [style: string]: InferenceSession };
+  cpuSession: { [style: string]: InferenceSession };
+
+  styleSelect: string;
+  styleSelectList: Array<{text: string, value: string}>;
+  // RETHINK THIS************
 
   inferenceTime: number;
   imageURLInput: string;
   imageURLSelect: null;
   imageURLSelectList: Array<{text: string, value: string}>;
-  styleSelect: null;
-  styleSelectList: Array<{text: string, value: string}>;
   imageLoading: boolean;
   imageLoadingError: boolean;
   output: Tensor.DataType;
@@ -145,12 +147,14 @@ export default class FNSUI extends Vue{
     this.imageURLInput = '';
     this.imageURLSelect = null;
     this.imageURLSelectList = this.imageUrls;
-    this.styleSelect = null;
+    this.styleSelect = 'Mosaic';
     this.styleSelectList = this.styles;
     this.imageLoading = false;
     this.imageLoadingError = false;
     this.output = [];
     this.modelFile = new ArrayBuffer(0);
+    this.gpuSession = {};
+    this.cpuSession = {};
   }
 
   async created() {
@@ -166,41 +170,71 @@ export default class FNSUI extends Vue{
   }
 
   async initSession() {
+    /* ADDING    STYLES*/
+    // if (this.styleSelect === 'Mosaic') { 
+    //   if (this.mosaic) {
+    //     this.currentStyle = this.mosaic;
+    //   }
+    // }
+    // if (this.styleSelect === 'Candy') { 
+    //   if (this.candy) {
+    //     this.currentStyle = this.candy;
+    //   }
+    // }
+    // if (this.styleSelect === 'Rain Princess') { 
+    //   if (this.rainPrincess) {
+    //     this.currentStyle = this.rainPrincess;
+    //   }
+    // }
+    // if (this.styleSelect === 'Udnie') { 
+    //   if (this.udnie) {
+    //     this.currentStyle = this.udnie;
+    //   }
+    // }
+    // if (this.styleSelect === 'Pointilism') { 
+    //   if (this.pointilism) {
+    //     this.currentStyle = this.pointilism;
+    //   }
+    // }
     this.sessionRunning = false;
     this.modelLoadingError = false;
+    /** BACKEND */
     if (this.sessionBackend === 'webgl') { 
-      if (this.gpuSession) {
-        this.session = this.gpuSession;
+      if (this.gpuSession[this.styleSelect]) {
+        this.session = this.gpuSession[this.styleSelect];
         return;
       }
       this.modelLoading = true;
       this.modelInitializing = true;  
-      this.gpuSession = new InferenceSession({backendHint: this.sessionBackend});
-      this.session = this.gpuSession;
+      this.gpuSession[this.styleSelect] = new InferenceSession({backendHint: this.sessionBackend});
+      this.session = this.gpuSession[this.styleSelect];
     }
     if (this.sessionBackend === 'wasm') {        
-      if (this.cpuSession) {
-        this.session = this.cpuSession;
+      if (this.cpuSession[this.styleSelect]) {
+        this.session = this.cpuSession[this.styleSelect];
         return;
       }
       this.modelLoading = true;
       this.modelInitializing = true;  
-      this.cpuSession = new InferenceSession({backendHint: this.sessionBackend});
-      this.session = this.cpuSession;
+      this.cpuSession[this.styleSelect] = new InferenceSession({backendHint: this.sessionBackend});
+      this.session = this.cpuSession[this.styleSelect];
     }    
     console.log('before loading model');
     console.log(this.modelFile);
 
+    console.log('SESSION ' + this.sessionBackend);
+
     try {
       await this.session!.loadModel(this.modelFile);
-      console.log('after loading model');
-    } catch (e){
+      // console.log('after loading model');
+    } catch (e) {
       this.modelLoading = false;
       this.modelInitializing = false;
+      console.log(e);
       if (this.sessionBackend === 'webgl') {
-        this.gpuSession = undefined;
+        this.gpuSession = {};
       } else {
-        this.cpuSession = undefined;
+        this.cpuSession = {};
       }
       throw new Error('Error: Backend not supported. ');
     }
@@ -217,7 +251,6 @@ export default class FNSUI extends Vue{
       await runModelUtils.warmupModel(this.session!, [1, 3, this.imageSize, this.imageSize]);
       this.modelInitializing = false;
     }
-    
   }
 
   @Watch('sessionBackend')
@@ -228,6 +261,7 @@ export default class FNSUI extends Vue{
       await this.initSession();
     } catch (e) {
       console.log(e);
+      // CHANGE TO TRUE LATER
       this.modelLoadingError = true;
     }
     return newVal;
@@ -240,14 +274,22 @@ export default class FNSUI extends Vue{
   }
 
   @Watch('styleSelect')
-  styleSelectChange(newVal: string) {
-    console.log('style select call');
+  async styleSelectChange(newStyle: string) {
+    this.sessionBackend = newStyle;
+    this.clearAll();
+    try {
+      await this.initSession();
+    } catch (e) {
+      //console.log(e);
+      this.modelLoadingError = true;
+    }
+    return newStyle;
   }
   
   beforeDestroy() {
     this.session = undefined;
-    this.gpuSession = undefined;
-    this.cpuSession = undefined;
+    this.gpuSession = {};
+    this.cpuSession = {};
   }
 
   get outputClasses() {
