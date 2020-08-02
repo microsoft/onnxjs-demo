@@ -33,14 +33,22 @@
         <!-- select input images -->
         <v-flex sm6 md4 align-center justify-start column fill-height>
           <v-flex sm3 md4 align-center justify-center style="margin: auto; padding-bottom: 30px" fill-width>
-              <v-select
-                v-model="styleSelect"
+            <!-- <v-select
+          v-model="styleSelect"
+          :items="styleselectlist"
+          label="Select style"
+          persistent-hint
+          return-object
+          single-line
+        ></v-select> -->
+              <v-select v-model="styleSelect"
                 :disabled="modelLoading || modelInitializing || modelLoadingError"
                 :items="styleSelectList"
                 label="Select style"
                 :menu-props="{maxHeight:'750'}"
                 solo single-line hide-details
               ></v-select>
+              
             </v-flex>
           <v-layout align-center> 
             <v-flex sm4>
@@ -147,7 +155,7 @@ export default class FNSUI extends Vue{
     this.imageURLInput = '';
     this.imageURLSelect = null;
     this.imageURLSelectList = this.imageUrls;
-    this.styleSelect = 'Mosaic';
+    this.styleSelect = this.styles[0].value;
     this.styleSelectList = this.styles;
     this.imageLoading = false;
     this.imageLoadingError = false;
@@ -170,32 +178,6 @@ export default class FNSUI extends Vue{
   }
 
   async initSession() {
-    /* ADDING    STYLES*/
-    // if (this.styleSelect === 'Mosaic') { 
-    //   if (this.mosaic) {
-    //     this.currentStyle = this.mosaic;
-    //   }
-    // }
-    // if (this.styleSelect === 'Candy') { 
-    //   if (this.candy) {
-    //     this.currentStyle = this.candy;
-    //   }
-    // }
-    // if (this.styleSelect === 'Rain Princess') { 
-    //   if (this.rainPrincess) {
-    //     this.currentStyle = this.rainPrincess;
-    //   }
-    // }
-    // if (this.styleSelect === 'Udnie') { 
-    //   if (this.udnie) {
-    //     this.currentStyle = this.udnie;
-    //   }
-    // }
-    // if (this.styleSelect === 'Pointilism') { 
-    //   if (this.pointilism) {
-    //     this.currentStyle = this.pointilism;
-    //   }
-    // }
     this.sessionRunning = false;
     this.modelLoadingError = false;
     /** BACKEND */
@@ -231,6 +213,7 @@ export default class FNSUI extends Vue{
       this.modelLoading = false;
       this.modelInitializing = false;
       console.log(e);
+      console.log(this.styleSelectList[0].text);
       if (this.sessionBackend === 'webgl') {
         this.gpuSession = {};
       } else {
@@ -275,13 +258,20 @@ export default class FNSUI extends Vue{
 
   @Watch('styleSelect')
   async styleSelectChange(newStyle: string) {
-    this.sessionBackend = newStyle;
-    this.clearAll();
+    this.styleSelect = newStyle;
+    this.clearSome();
     try {
       await this.initSession();
     } catch (e) {
-      //console.log(e);
       this.modelLoadingError = true;
+    }
+    if (!this.imageLoadingError && !this.modelLoadingError) {
+      this.sessionRunning = true;
+      this.$nextTick(function() {
+        setTimeout(() => {
+          this.runModel();
+        }, 10);
+      });
     }
     return newStyle;
   }
@@ -378,6 +368,13 @@ export default class FNSUI extends Vue{
       }
     }
   }
+  clearSome() {
+    this.sessionRunning = false;
+    this.inferenceTime = 0;
+    this.imageLoading = false;
+    this.imageLoadingError = false;
+    this.output = [];
+  }
 }
 </script>
 
@@ -411,7 +408,7 @@ export default class FNSUI extends Vue{
   padding: 0 16px;
 }
 
-.inputs:focus, .inputs:hover {
+/* .inputs:focus, .inputs:hover {
 	position: relative;
   background: rgba(0, 0, 0, .12);
 }
@@ -423,7 +420,7 @@ export default class FNSUI extends Vue{
   text-align: left;
   user-select: none;
   cursor: default;
-}
+} */
 
 .canvas-container {
   position: relative;

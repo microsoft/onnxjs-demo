@@ -5,7 +5,6 @@
     :imageUrls="imageUrls"
     :styles="styles"
     :preprocess="preprocess"
-    :getPredictedClass="getPredictedClass"
   ></FNSUI>
 </template>
 
@@ -17,7 +16,7 @@ import {Tensor} from 'onnxjs';
 import {Vue, Component} from 'vue-property-decorator';
 import {SQUEEZENET_IMAGE_URLS} from '../../data/sample-image-urls';
 import {FNS_STYLES} from '../../data/fns_styles';
-import {imagenetUtils, mathUtils} from '../../utils/index';
+// import {imagenetUtils, mathUtils} from '../../utils/index';
 
 const MODEL_FILEPATH_PROD = `/onnxjs-demo/fns-models/mosaic-8.onnx`;
 const MODEL_FILEPATH_DEV = '/fns-models/mosaic-8.onnx';
@@ -66,16 +65,16 @@ export default class FastNeuralStyle extends Vue{
     return tensor;
   }
 
-  getPredictedClass(res: Float32Array): {} {
-    if (!res || res.length === 0) {
-      const empty = [];
-      for (let i = 0; i < 5; i++) {
-        empty.push({ name: '-', probability: 0, index: 0 });
-      }
-      return empty;
-    }
-    const output = mathUtils.softmax(Array.prototype.slice.call(res));
-    return imagenetUtils.imagenetClassesTopK(output, 5);
-  }
+  // getPredictedClass(res: Float32Array): {} {
+  //   if (!res || res.length === 0) {
+  //     const empty = [];
+  //     for (let i = 0; i < 5; i++) {
+  //       empty.push({ name: '-', probability: 0, index: 0 });
+  //     }
+  //     return empty;
+  //   }
+  //   const output = mathUtils.softmax(Array.prototype.slice.call(res));
+  //   return imagenetUtils.imagenetClassesTopK(output, 5);
+  // }
 }
 </script>
