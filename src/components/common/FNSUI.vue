@@ -118,7 +118,8 @@ export default class FNSUI extends Vue{
   @Prop({ type: Array, required: true}) imageUrls!: Array<{text: string, value: string}>;
   @Prop({ type: Array, required: true}) styles!: Array<{text: string, value: string}>;
   @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
-  @Prop({ type: Function, required: true }) getPredictedClass !: (output: Float32Array) => {};
+  @Prop({ type: Function, required: true }) postprocess!: (ten: Tensor, ctx: CanvasRenderingContext2D) => void;
+  //@Prop({ type: Function, required: true }) getPredictedClass !: (output: Float32Array) => {};
 
   sessionBackend: string;
   backendSelectList: Array<{text: string, value: string}>;
@@ -259,13 +260,15 @@ export default class FNSUI extends Vue{
   @Watch('styleSelect')
   async styleSelectChange(newStyle: string) {
     this.styleSelect = newStyle;
+    console.log('STYLE: ' + newStyle);
+    // this.modelFilepath = newStyle;
     this.clearSome();
     try {
       await this.initSession();
     } catch (e) {
       this.modelLoadingError = true;
     }
-    if (!this.imageLoadingError && !this.modelLoadingError) {
+    if (!this.imageLoadingError && !this.modelLoadingError && this.imageURLInput !== '') {
       this.sessionRunning = true;
       this.$nextTick(function() {
         setTimeout(() => {
@@ -282,9 +285,9 @@ export default class FNSUI extends Vue{
     this.cpuSession = {};
   }
 
-  get outputClasses() {
-    return this.getPredictedClass(Array.prototype.slice.call(this.output));
-  }
+  // get outputClasses() {
+  //   return this.getPredictedClass(Array.prototype.slice.call(this.output));
+  // }
 
   onImageURLInputEnter(e: any) {
       this.imageURLSelect = null;
@@ -344,10 +347,15 @@ export default class FNSUI extends Vue{
   async runModel() {
     const element = document.getElementById('input-canvas') as HTMLCanvasElement;
     const ctx = element.getContext('2d') as CanvasRenderingContext2D;    
+    const outElement = document.getElementById('output-canvas') as HTMLCanvasElement;
+    const outCtx = outElement.getContext('2d') as CanvasRenderingContext2D;
+
     const preprocessedData = this.preprocess(ctx);
     let tensorOutput = null;
     [tensorOutput, this.inferenceTime] = await runModelUtils.runModel(this.session!, preprocessedData);
-    this.output = tensorOutput.data;
+    // this.output = tensorOutput.data;
+
+    this.postprocess(tensorOutput, outCtx);
     this.sessionRunning = false;
   }
 
@@ -368,6 +376,7 @@ export default class FNSUI extends Vue{
       }
     }
   }
+
   clearSome() {
     this.sessionRunning = false;
     this.inferenceTime = 0;
