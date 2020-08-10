@@ -260,8 +260,8 @@ export default class FNSUI extends Vue{
   @Watch('styleSelect')
   async styleSelectChange(newStyle: string) {
     this.styleSelect = newStyle;
-    console.log('STYLE: ' + newStyle);
-    // this.modelFilepath = newStyle;
+    const response = await fetch(this.styleSelect);
+    this.modelFile = await response.arrayBuffer();
     this.clearSome();
     try {
       await this.initSession();
