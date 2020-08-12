@@ -38,6 +38,7 @@ const DEMO_INFO = [
   { model: 'Emotion FerPlus', title: 'Emotion FerPlus', path: 'emotion_ferplus'},
   { model: 'Yolo', title: 'Yolo', path: 'yolo'},
   { model: 'MNIST', title: 'MNIST', path: 'mnist'}, 
+  { model: 'Fast Neural Style', title: 'Fast Neural Style', path: 'fast_neural_style'}, 
 ];
 
 @Component
