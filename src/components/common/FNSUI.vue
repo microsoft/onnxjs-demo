@@ -33,14 +33,6 @@
         <!-- select input images -->
         <v-flex sm6 md4 align-center justify-start column fill-height>
           <v-flex sm3 md4 align-center justify-center style="margin: auto; padding-bottom: 30px" fill-width>
-            <!-- <v-select
-          v-model="styleSelect"
-          :items="styleselectlist"
-          label="Select style"
-          persistent-hint
-          return-object
-          single-line
-        ></v-select> -->
               <v-select v-model="styleSelect"
                 :disabled="modelLoading || modelInitializing || modelLoadingError"
                 :items="styleSelectList"
@@ -92,9 +84,7 @@
             ></canvas>
         </v-flex>
       </v-layout>
-      
-    </v-container>
-       
+    </v-container> 
   </div>
 </template>
 
@@ -119,7 +109,6 @@ export default class FNSUI extends Vue{
   @Prop({ type: Array, required: true}) styles!: Array<{text: string, value: string}>;
   @Prop({ type: Function, required: true }) preprocess!: (ctx: CanvasRenderingContext2D) => Tensor;
   @Prop({ type: Function, required: true }) postprocess!: (ten: Tensor, ctx: CanvasRenderingContext2D) => void;
-  //@Prop({ type: Function, required: true }) getPredictedClass !: (output: Float32Array) => {};
 
   sessionBackend: string;
   backendSelectList: Array<{text: string, value: string}>;
@@ -133,7 +122,6 @@ export default class FNSUI extends Vue{
 
   styleSelect: string;
   styleSelectList: Array<{text: string, value: string}>;
-  // RETHINK THIS************
 
   inferenceTime: number;
   imageURLInput: string;
@@ -142,7 +130,7 @@ export default class FNSUI extends Vue{
   imageLoading: boolean;
   imageLoadingError: boolean;
   output: Tensor.DataType;
-  modelFile: ArrayBuffer;
+  modelFile: { [style: string]: ArrayBuffer };
 
   constructor() {
     super();
@@ -161,7 +149,7 @@ export default class FNSUI extends Vue{
     this.imageLoading = false;
     this.imageLoadingError = false;
     this.output = [];
-    this.modelFile = new ArrayBuffer(0);
+    this.modelFile = {};
     this.gpuSession = {};
     this.cpuSession = {};
   }
@@ -169,8 +157,7 @@ export default class FNSUI extends Vue{
   async created() {
     // fetch the model file to be used later
     const response = await fetch(this.modelFilepath);
-    this.modelFile = await response.arrayBuffer();
-    console.log(this.modelFilepath);
+    this.modelFile[this.styleSelect] = await response.arrayBuffer();
     try {
       await this.initSession();
     } catch (e) {
@@ -181,7 +168,6 @@ export default class FNSUI extends Vue{
   async initSession() {
     this.sessionRunning = false;
     this.modelLoadingError = false;
-    /** BACKEND */
     if (this.sessionBackend === 'webgl') { 
       if (this.gpuSession[this.styleSelect]) {
         this.session = this.gpuSession[this.styleSelect];
@@ -201,20 +187,13 @@ export default class FNSUI extends Vue{
       this.modelInitializing = true;  
       this.cpuSession[this.styleSelect] = new InferenceSession({backendHint: this.sessionBackend});
       this.session = this.cpuSession[this.styleSelect];
-    }    
-    console.log('before loading model');
-    console.log(this.modelFile);
-
-    console.log('SESSION ' + this.sessionBackend);
+    }
 
     try {
-      await this.session!.loadModel(this.modelFile);
-      // console.log('after loading model');
+      await this.session!.loadModel(this.modelFile[this.styleSelect]);
     } catch (e) {
       this.modelLoading = false;
       this.modelInitializing = false;
-      console.log(e);
-      console.log(this.styleSelectList[0].text);
       if (this.sessionBackend === 'webgl') {
         this.gpuSession = {};
       } else {
@@ -244,8 +223,6 @@ export default class FNSUI extends Vue{
     try {
       await this.initSession();
     } catch (e) {
-      console.log(e);
-      // CHANGE TO TRUE LATER
       this.modelLoadingError = true;
     }
     return newVal;
@@ -260,8 +237,10 @@ export default class FNSUI extends Vue{
   @Watch('styleSelect')
   async styleSelectChange(newStyle: string) {
     this.styleSelect = newStyle;
-    const response = await fetch(this.styleSelect);
-    this.modelFile = await response.arrayBuffer();
+    if (!this.modelFile[newStyle]) {
+      const response = await fetch(this.styleSelect);
+      this.modelFile[this.styleSelect] = await response.arrayBuffer();
+    }
     this.clearSome();
     try {
       await this.initSession();
@@ -284,10 +263,6 @@ export default class FNSUI extends Vue{
     this.gpuSession = {};
     this.cpuSession = {};
   }
-
-  // get outputClasses() {
-  //   return this.getPredictedClass(Array.prototype.slice.call(this.output));
-  // }
 
   onImageURLInputEnter(e: any) {
       this.imageURLSelect = null;
@@ -353,7 +328,6 @@ export default class FNSUI extends Vue{
     const preprocessedData = this.preprocess(ctx);
     let tensorOutput = null;
     [tensorOutput, this.inferenceTime] = await runModelUtils.runModel(this.session!, preprocessedData);
-    // this.output = tensorOutput.data;
 
     this.postprocess(tensorOutput, outCtx);
     this.sessionRunning = false;
@@ -416,20 +390,6 @@ export default class FNSUI extends Vue{
   transition: .3s cubic-bezier(.25,.8,.5,1),color 1ms;
   padding: 0 16px;
 }
-
-/* .inputs:focus, .inputs:hover {
-	position: relative;
-  background: rgba(0, 0, 0, .12);
-}
-
-.input-label {
-  font-family: var(--font-sans-serif);
-  font-size: 16px;
-  color: var(--color-blue);
-  text-align: left;
-  user-select: none;
-  cursor: default;
-} */
 
 .canvas-container {
   position: relative;
