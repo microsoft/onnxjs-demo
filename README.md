@@ -1,3 +1,12 @@
+## ONNX.js has been replaced by ONNX Runtime Web which offers enhanced user experience and improved performance. Please visit the following links to get more information:
+
+- **ONNX Runtime Web Demo** ([repo](https://github.com/microsoft/onnxruntime-web-demo)/[website](https://microsoft.github.io/onnxruntime-web-demo/))
+- [**Migration ONNX.js to ONNX Runtime Web**](https://github.com/microsoft/onnxjs/blob/master/docs/migration-to-ort-web.md)
+- [ONNX Runtime Web (README)](https://github.com/microsoft/onnxruntime/tree/master/js/web)
+- [Get started with ORT for JavaScript - onnxruntime.ai](https://onnxruntime.ai/docs/get-started/with-javascript.html)
+- [Tutorials / Deploy on web - onnxruntime.ai](https://onnxruntime.ai/docs/tutorials/web/)
+- [ONNX Runtime JavaScript API](https://onnxruntime.ai/docs/api/js/index.html)
+
 # ONNX.js Demo
 
 ONNX.js demo is an interactive demo portal showing real use cases running [ONNX.js](https://github.com/Microsoft/onnxjs) runtime in VueJS. It currently supports four examples for you to quickly experience the power of ONNX.js runtime. 
